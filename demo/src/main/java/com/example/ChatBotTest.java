@@ -1,26 +1,37 @@
 package com.example;
 
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 
+import junit.framework.TestCase;
+public class ChatBotTest extends TestCase {
 
-public class ChatBotTest {
+    private URL classesURL;
+
+    public ChatBotTest(URL classesURL){
+        this.classesURL = classesURL;
+    }
     
     boolean testChatBotName(){
-        Class<?> clazz = ChatBot.class;
-        try {
+        
+        try(URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{classesURL})) {
+            Class<?> clazz = urlClassLoader.loadClass("com.example.ChatBot");
             Field nameField = clazz.getDeclaredField("chatBotName");
             int modifiers = nameField.getModifiers();
-
-            if (Modifier.isPrivate(modifiers)) { System.out.println("Field 'name' is private."); } else { System.out.println("Field 'name' is not private."); }
+            assertTrue(Modifier.isPrivate(modifiers));
             return true;
         } catch (NoSuchFieldException e) {
             System.out.println("Dont exist");
             return false;
         }
+        catch (Exception e){
+            
+        }
+        return false;
     }
 
     boolean testNumResponsesGenerated(){

@@ -1,6 +1,5 @@
 //816035438
 package com.example;
-import java.util.Random;
 
 public class ChatBot{
     private String chatBotName;
