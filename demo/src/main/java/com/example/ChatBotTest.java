@@ -19,7 +19,7 @@ public class ChatBotTest extends TestCase {
     boolean testChatBotName(){
         
         try(URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{classesURL})) {
-            Class<?> clazz = urlClassLoader.loadClass("com.example.ChatBot");
+            Class<?> clazz = urlClassLoader.loadClass("ChatBot");
             Field nameField = clazz.getDeclaredField("chatBotName");
             int modifiers = nameField.getModifiers();
             assertTrue("Yo its me bubby",Modifier.isPrivate(modifiers));

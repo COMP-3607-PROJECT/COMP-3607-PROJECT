@@ -14,12 +14,13 @@ public class App
 
         // new ChatBotTester(null)).main(new String[1]);
         try{
-            URL classesUrl = Paths.get("C:\\Users\\craft\\Downloads\\").toUri().toURL();
+            URL classesUrl = Paths.get("C:\\Users\\craft\\Downloads\\javatest").toUri().toURL();
+            System.out.println(classesUrl);
             ChatBotTester CBT = new ChatBotTester(classesUrl);
             CBT.main(new String[1]);
         }
         catch(Exception e){
-
+            System.out.println("I am the best");
         }
         
         

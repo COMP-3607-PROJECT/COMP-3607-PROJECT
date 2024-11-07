@@ -2,7 +2,7 @@
 package com.example;
 
 public class ChatBot{
-    protected String chatBotName;
+    private String chatBotName;
     private int numResponsesGenerated;
     private static int messageLimit = 10;
     private static int messageNumber = 0;
