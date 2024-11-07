@@ -3,10 +3,20 @@ package com.example;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.URL;
+import java.net.URLClassLoader;
 
-public class ChatBotTester {
+import junit.framework.TestCase;
 
-    public static void main(String[] args) {
+public class ChatBotTester extends TestCase{
+
+    private final URL classesURL;
+
+    public ChatBotTester(URL classesURL){
+        this.classesURL = classesURL;
+    }
+
+    public void main(String[] args) {
         System.out.println("Testing Fields:");
         testChatBotNameField();
         testNumResponsesGeneratedField();
@@ -24,14 +34,19 @@ public class ChatBotTester {
     }
 
     // Field tests
-    static void testChatBotNameField() {
-        try {
-            Field field = ChatBot.class.getDeclaredField("chatBotName");
+    void testChatBotNameField() {
+        try(URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{classesURL})) {
+            
+            Class<?> clazz = urlClassLoader.loadClass("com.example.ChatBot"); //= ChatBot.class.getDeclaredField("chatBotName");
+            Field field = clazz.getDeclaredField("chatBotName");
             assert field.getType() == String.class : "chatBotName should be of type String";
             assert Modifier.isPrivate(field.getModifiers()) : "chatBotName should be private";
             System.out.println("chatBotName field - Type: String, Access: Private, Pass");
         } catch (NoSuchFieldException e) {
             System.out.println("Field chatBotName does not exist.");
+        }
+        catch(Exception e){
+            System.out.println(e);
         }
     }
 

@@ -12,11 +12,11 @@ public class App
     public static void main( String[] args )
     {
 
-        ChatBotTester.main(new String[1]);
+        // new ChatBotTester(null)).main(new String[1]);
         try{
             URL classesUrl = Paths.get("C:\\Users\\craft\\Downloads\\").toUri().toURL();
-            ChatBotTest CBT = new ChatBotTest(classesUrl);
-            CBT.testChatBotName();
+            ChatBotTester CBT = new ChatBotTester(classesUrl);
+            CBT.main(new String[1]);
         }
         catch(Exception e){
 

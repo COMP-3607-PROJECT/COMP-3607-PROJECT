@@ -22,21 +22,25 @@ public class ChatBotTest extends TestCase {
             Class<?> clazz = urlClassLoader.loadClass("com.example.ChatBot");
             Field nameField = clazz.getDeclaredField("chatBotName");
             int modifiers = nameField.getModifiers();
-            assertTrue(Modifier.isPrivate(modifiers));
+            assertTrue("Yo its me bubby",Modifier.isPrivate(modifiers));
             return true;
         } catch (NoSuchFieldException e) {
             System.out.println("Dont exist");
             return false;
         }
-        catch (Exception e){
+        catch (AssertionError e){
             
+        }
+        catch(Exception e){
+
         }
         return false;
     }
 
     boolean testNumResponsesGenerated(){
-        Class<?> clazz = ChatBot.class;
-        try {
+        
+        try(URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{classesURL})) {
+            Class<?> clazz = ChatBot.class;
             Field responsesGeneratedField = clazz.getDeclaredField("numResponsesGenerated");
             int modifiers = responsesGeneratedField.getModifiers();
 
@@ -46,6 +50,9 @@ public class ChatBotTest extends TestCase {
             return true;
         } catch (NoSuchFieldException e) {
             System.out.println("Fail");
+            return false;
+        }
+        catch(Exception e){
             return false;
         }
     }
