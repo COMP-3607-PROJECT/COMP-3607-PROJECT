@@ -13,10 +13,16 @@ import junit.framework.TestCase;
 
 public class ChatBotTester extends TestCase{
 
-    private final URL classesURL;
+    private URLClassLoader urlClassLoader;
+    private Class<?> clazzz;
 
     public ChatBotTester(URL classesURL){
-        this.classesURL = classesURL;
+         urlClassLoader = new URLClassLoader(new URL[]{classesURL});
+         try {
+            clazzz = urlClassLoader.loadClass("ChatBot");
+         } catch (Exception e) {
+         }
+         
     }
 
     public void main(String[] args) {
@@ -36,30 +42,42 @@ public class ChatBotTester extends TestCase{
         testPromptMethod();
     }
 
+
+
     // Field tests
     @Test
     void testChatBotNameField() {
-        try(URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{classesURL})) {
-            // urlClassLoader.setDefaultAssertionStatus(true);
-            Class<?> clazz = urlClassLoader.loadClass("ChatBot"); //= ChatBot.class.getDeclaredField("chatBotName");
-            Field field = clazz.getDeclaredField("chatBotName");
-            assert field.getType() == String.class : "chatBotName should be of type String";
-            Assert.assertEquals(String.class, field.getType());
-            Assert.assertEquals("chatBotName should be private",true, Modifier.isPrivate(field.getModifiers())); 
-            System.out.println("chatBotName field - Type: String, Access: Private, Pass");
-        } catch (NoSuchFieldException e) {
-            System.out.println("Field chatBotName does not exist.");
+        try{
+        Class<?> clazz = urlClassLoader.loadClass("ChatBot"); //= ChatBot.class.getDeclaredField("chatBotName");
+        Field field = clazz.getDeclaredField("chatBotName");
+        Assert.assertEquals(String.class, field.getType());
+        Assert.assertEquals("chatBotName should be private",true, Modifier.isPrivate(field.getModifiers())); 
+        System.out.println("chatBotName field - Type: String, Access: Private, Pass");
         }
         catch(Exception e){
             System.out.println(e);
         }
-        catch(Error e){
-            System.out.println(e);
-        }
+        // try(URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{classesURL})) {
+        //     // urlClassLoader.setDefaultAssertionStatus(true);
+            // Class<?> clazz = urlClassLoader.loadClass("ChatBot"); //= ChatBot.class.getDeclaredField("chatBotName");
+            // Field field = clazz.getDeclaredField("chatBotName");
+            // assert field.getType() == String.class : "chatBotName should be of type String";
+            // Assert.assertEquals(String.class, field.getType());
+            // Assert.assertEquals("chatBotName should be private",true, Modifier.isPrivate(field.getModifiers())); 
+            // System.out.println("chatBotName field - Type: String, Access: Private, Pass");
+        // } catch (NoSuchFieldException e) {
+        //     System.out.println("Field chatBotName does not exist.");
+        // }
+        // catch(Exception e){
+        //     System.out.println(e);
+        // }
+        // catch(Error e){
+        //     System.out.println(e);
+        // }
     }
     @Test
     void testNumResponsesGeneratedField() {
-        try(URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{classesURL})) {
+        try{
             Class<?> clazz = urlClassLoader.loadClass("ChatBot");
             Field field = clazz.getDeclaredField("numResponsesGenerated");
             assert field.getType() == int.class : "numResponsesGenerated should be of type int";
@@ -74,14 +92,18 @@ public class ChatBotTester extends TestCase{
         }
     }
 
-    static void testMessageLimitField() {
+    void testMessageLimitField() {
         try {
-            Field field = ChatBot.class.getDeclaredField("messageLimit");
+            Class<?> clazz = urlClassLoader.loadClass("ChatBot");
+            Field field = clazzz.getDeclaredField("messageLimit");
             assert field.getType() == int.class : "messageLimit should be of type int";
             assert Modifier.isStatic(field.getModifiers()) : "messageLimit should be static";
             System.out.println("messageLimit field - Type: int, Access: Static, Pass");
         } catch (NoSuchFieldException e) {
             System.out.println("Field messageLimit does not exist.");
+        }
+        catch(Exception e){
+
         }
     }
 
