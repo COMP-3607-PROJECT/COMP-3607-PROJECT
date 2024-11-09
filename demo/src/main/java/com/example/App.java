@@ -55,7 +55,7 @@ public class App
             URL classesUrl = Paths.get("C:\\Users\\craft\\Downloads\\javatest").toUri().toURL();
             System.out.println(classesUrl);
             ChatBotTester CBT = new ChatBotTester(classesUrl);
-            CBT.testGetMessageLimitMethod();
+            CBT.testGetMessageLimit();
             callAllMethods(CBT);
         }
         catch(Exception e){

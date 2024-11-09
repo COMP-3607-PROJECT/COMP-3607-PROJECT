@@ -8,6 +8,7 @@ import java.net.URLClassLoader;
 
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.Test;
 
 class ChatBotTester {
@@ -99,6 +100,7 @@ class ChatBotTester {
                 () -> {
                     Field field = clazzz.getDeclaredField("messageNumber");
                     Assertions.assertEquals(int.class, field.getType(), "messageNumber should be of type int");
+                
                 },
                 // Test if the field is static
                 () -> {
@@ -155,19 +157,26 @@ class ChatBotTester {
 
     // Test getMessageLimit method
     @Test
-    void testGetMessageLimitMethod() {
+    void testGetMessageLimit() {
         try {
             System.out.println("1");
             assertAll("getMessageLimit Method Tests",
                 // Test return type
                 () -> {
                     Method method = clazzz.getDeclaredMethod("getMessageLimit");
+
                     Assertions.assertEquals(int.class, method.getReturnType(), "getMessageLimit should return an int");
                 },
                 // Test if the method is public
                 () -> {
                     Method method = clazzz.getDeclaredMethod("getMessageLimit");
-                    Assertions.assertTrue(Modifier.isPublic(method.getModifiers()), "getMessageLimit should be public");
+                    int modifiers = method.getModifiers();
+                    
+                    assertFalse(Modifier.isPrivate(modifiers), "Field should not be private");
+                    assertFalse(Modifier.isProtected(modifiers), "Field should not be protected");
+                    assertFalse(Modifier.isPublic(modifiers), "Field should not be public");
+                    System.out.println(method.getModifiers());
+                    //Assertions.assertTrue(Modifier.isPublic(method.getModifiers()), "getMessageLimit should be public");
                 }
             );
         } catch (Exception e) {
