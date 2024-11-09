@@ -53,9 +53,9 @@ public class App
             // new JUnitTest().testAssertions();
 
             URL classesUrl = Paths.get("C:\\Users\\craft\\Downloads\\javatest").toUri().toURL();
-            System.out.println(classesUrl);
+            //System.out.println(classesUrl);
             ChatBotTester CBT = new ChatBotTester(classesUrl);
-            CBT.testGetMessageLimit();
+            //CBT.testGetMessageLimit();
             callAllMethods(CBT);
         }
         catch(Exception e){
