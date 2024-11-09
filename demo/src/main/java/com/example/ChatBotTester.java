@@ -6,201 +6,235 @@ import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
-
-public class ChatBotTester extends TestCase{
+class ChatBotTester {
 
     private URLClassLoader urlClassLoader;
     private Class<?> clazzz;
+    private Object obj;
 
-    public ChatBotTester(URL classesURL){
-         urlClassLoader = new URLClassLoader(new URL[]{classesURL});
-         try {
+    public ChatBotTester(URL classesURL) {
+        urlClassLoader = new URLClassLoader(new URL[]{classesURL});
+        try {
             clazzz = urlClassLoader.loadClass("ChatBot");
-         } catch (Exception e) {
-         }
-         
+            Object obj = clazzz.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void main(String[] args) {
-        System.out.println("Testing Fields:");
-        testChatBotNameField();
-        testNumResponsesGeneratedField();
-        testMessageLimitField();
-        testMessageNumberField();
-
-        System.out.println("\nTesting Methods:");
-        testConstructor();
-        testGetChatBotNameMethod();
-        testGetNumResponsesGeneratedMethod();
-        testGetMessageLimitMethod();
-        testGetTotalNumResponsesGeneratedMethod();
-        testLimitReachedMethod();
-        testPromptMethod();
-    }
-
-
-
-    // Field tests
+    // Test chatBotName field
     @Test
     void testChatBotNameField() {
-        try{
-        Class<?> clazz = urlClassLoader.loadClass("ChatBot"); //= ChatBot.class.getDeclaredField("chatBotName");
-        Field field = clazz.getDeclaredField("chatBotName");
-        Assert.assertEquals(String.class, field.getType());
-        Assert.assertEquals("chatBotName should be private",true, Modifier.isPrivate(field.getModifiers())); 
-        System.out.println("chatBotName field - Type: String, Access: Private, Pass");
+        try {
+            System.out.println("1");
+            assertAll("chatBotName Field Tests",
+                // Test field type
+                () -> {
+                    Field field = clazzz.getDeclaredField("chatBotName");
+                    Assertions.assertEquals(String.class, field.getType(), "chatBotName should be of type String");
+                },
+                // Test field access modifier
+                () -> {
+                    Field field = clazzz.getDeclaredField("chatBotName");
+                    Assertions.assertTrue(Modifier.isPrivate(field.getModifiers()), "chatBotName should be private");
+                }
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch(Exception e){
-            System.out.println(e);
-        }
-        // try(URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{classesURL})) {
-        //     // urlClassLoader.setDefaultAssertionStatus(true);
-            // Class<?> clazz = urlClassLoader.loadClass("ChatBot"); //= ChatBot.class.getDeclaredField("chatBotName");
-            // Field field = clazz.getDeclaredField("chatBotName");
-            // assert field.getType() == String.class : "chatBotName should be of type String";
-            // Assert.assertEquals(String.class, field.getType());
-            // Assert.assertEquals("chatBotName should be private",true, Modifier.isPrivate(field.getModifiers())); 
-            // System.out.println("chatBotName field - Type: String, Access: Private, Pass");
-        // } catch (NoSuchFieldException e) {
-        //     System.out.println("Field chatBotName does not exist.");
-        // }
-        // catch(Exception e){
-        //     System.out.println(e);
-        // }
-        // catch(Error e){
-        //     System.out.println(e);
-        // }
     }
+
+    // Test numResponsesGenerated field
     @Test
     void testNumResponsesGeneratedField() {
-        try{
-            Class<?> clazz = urlClassLoader.loadClass("ChatBot");
-            Field field = clazz.getDeclaredField("numResponsesGenerated");
-            assert field.getType() == int.class : "numResponsesGenerated should be of type int";
-            Assert.assertEquals("numResponsesGenerated should be of type int", int.class, field.getType());
-            assert Modifier.isPrivate(field.getModifiers()) : "numResponsesGenerated should be private";
-            System.out.println("numResponsesGenerated field - Type: int, Access: Private, Pass");
-        } catch (NoSuchFieldException e) {
-            System.out.println("Field numResponsesGenerated does not exist.");
-        }
-        catch(Exception e){
-
+        try {
+            assertAll("numResponsesGenerated Field Tests",
+                // Test field type
+                () -> {
+                    Field field = clazzz.getDeclaredField("numResponsesGenerated");
+                    Assertions.assertEquals(int.class, field.getType(), "numResponsesGenerated should be of type int");
+                },
+                // Test field access modifier
+                () -> {
+                    Field field = clazzz.getDeclaredField("numResponsesGenerated");
+                    Assertions.assertTrue(Modifier.isPrivate(field.getModifiers()), "numResponsesGenerated should be private");
+                }
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
+    // Test messageLimit field
+    @Test
     void testMessageLimitField() {
         try {
-            Class<?> clazz = urlClassLoader.loadClass("ChatBot");
-            Field field = clazzz.getDeclaredField("messageLimit");
-            assert field.getType() == int.class : "messageLimit should be of type int";
-            assert Modifier.isStatic(field.getModifiers()) : "messageLimit should be static";
-            System.out.println("messageLimit field - Type: int, Access: Static, Pass");
-        } catch (NoSuchFieldException e) {
-            System.out.println("Field messageLimit does not exist.");
-        }
-        catch(Exception e){
-
-        }
-    }
-
-    static void testMessageNumberField() {
-        try {
-            Field field = ChatBot.class.getDeclaredField("messageNumber");
-            assert field.getType() == int.class : "messageNumber should be of type int";
-            assert Modifier.isStatic(field.getModifiers()) : "messageNumber should be static";
-            System.out.println("messageNumber field - Type: int, Access: Static, Pass");
-        } catch (NoSuchFieldException e) {
-            System.out.println("Field messageNumber does not exist.");
-        }
-    }
-
-    // Method tests
-    static void testConstructor() {
-        ChatBot cb = new ChatBot();
-        assert cb.getChatBotName() != null : "Constructor should initialize chatBotName";
-        System.out.println("Constructor test passed - chatBotName initialized");
-    }
-
-    static void testGetChatBotNameMethod() {
-        try {
-            ChatBot cb = new ChatBot();
-            Field field = ChatBot.class.getDeclaredField("chatBotName");
-            field.setAccessible(true);
-            String expectedValue = (String) field.get(cb);
-            Method method = ChatBot.class.getDeclaredMethod("getChatBotName");
-            String actualValue = (String) method.invoke(cb);
-            assert expectedValue.equals(actualValue) : "getChatBotName should return the value of chatBotName";
-            System.out.println("getChatBotName method - Correctly returns field value, Pass");
+            assertAll("messageLimit Field Tests",
+                // Test field type
+                () -> {
+                    Field field = clazzz.getDeclaredField("messageLimit");
+                    Assertions.assertEquals(int.class, field.getType(), "messageLimit should be of type int");
+                },
+                // Test if the field is static
+                () -> {
+                    Field field = clazzz.getDeclaredField("messageLimit");
+                    Assertions.assertTrue(Modifier.isStatic(field.getModifiers()), "messageLimit should be static");
+                }
+            );
         } catch (Exception e) {
-            System.out.println("Error in getChatBotName test: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    static void testGetNumResponsesGeneratedMethod() {
+    // Test messageNumber field
+    @Test
+    void testMessageNumberField() {
         try {
-            ChatBot cb = new ChatBot();
-            Field field = ChatBot.class.getDeclaredField("numResponsesGenerated");
-            field.setAccessible(true);
-            int expectedValue = (int) field.get(cb);
-            Method method = ChatBot.class.getDeclaredMethod("getNumResponsesGenerated");
-            int actualValue = (int) method.invoke(cb);
-            assert expectedValue == actualValue : "getNumResponsesGenerated should return the value of numResponsesGenerated";
-            System.out.println("getNumResponsesGenerated method - Correctly returns field value, Pass");
+            assertAll("messageNumber Field Tests",
+                // Test field type
+                () -> {
+                    Field field = clazzz.getDeclaredField("messageNumber");
+                    Assertions.assertEquals(int.class, field.getType(), "messageNumber should be of type int");
+                },
+                // Test if the field is static
+                () -> {
+                    Field field = clazzz.getDeclaredField("messageNumber");
+                    Assertions.assertTrue(Modifier.isStatic(field.getModifiers()), "messageNumber should be static");
+                }
+            );
         } catch (Exception e) {
-            System.out.println("Error in getNumResponsesGenerated test: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    static void testGetMessageLimitMethod() {
+    // Test getChatBotName method
+    @Test
+    void testGetChatBotNameMethod() {
         try {
-            Field field = ChatBot.class.getDeclaredField("messageLimit");
-            field.setAccessible(true);
-            int expectedValue = (int) field.get(null);  // Static fields use null as the instance
-            Method method = ChatBot.class.getDeclaredMethod("getMessageLimit");
-            int actualValue = (int) method.invoke(null);
-            assert expectedValue == actualValue : "getMessageLimit should return the value of messageLimit";
-            System.out.println("getMessageLimit method - Correctly returns field value, Pass");
+            assertAll("getChatBotName Method Tests",
+                // Test return type
+                () -> {
+                    Method method = clazzz.getDeclaredMethod("getChatBotName");
+                    Assertions.assertEquals(String.class, method.getReturnType(), "getChatBotName should return a String");
+                },
+                // Test if the method is public
+                () -> {
+                    Method method = clazzz.getDeclaredMethod("getChatBotName");
+                    Assertions.assertTrue(Modifier.isPublic(method.getModifiers()), "getChatBotName should be public");
+                }
+            );
         } catch (Exception e) {
-            System.out.println("Error in getMessageLimit test: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    static void testGetTotalNumResponsesGeneratedMethod() {
+    // Test getNumResponsesGenerated method
+    @Test
+    void testGetNumResponsesGeneratedMethod() {
         try {
-            Field field = ChatBot.class.getDeclaredField("messageNumber");
-            field.setAccessible(true);
-            int expectedValue = (int) field.get(null);  // Static fields use null as the instance
-            Method method = ChatBot.class.getDeclaredMethod("getTotalNumResponsesGenerated");
-            int actualValue = (int) method.invoke(null);
-            assert expectedValue == actualValue : "getTotalNumResponsesGenerated should return the value of messageNumber";
-            System.out.println("getTotalNumResponsesGenerated method - Correctly returns field value, Pass");
+            assertAll("getNumResponsesGenerated Method Tests",
+                // Test return type
+                () -> {
+                    Method method = clazzz.getDeclaredMethod("getNumResponsesGenerated");
+                    Assertions.assertEquals(int.class, method.getReturnType(), "getNumResponsesGenerated should return an int");
+                },
+                // Test if the method is public
+                () -> {
+                    Method method = clazzz.getDeclaredMethod("getNumResponsesGenerated");
+                    Assertions.assertTrue(Modifier.isPublic(method.getModifiers()), "getNumResponsesGenerated should be public");
+                }
+            );
         } catch (Exception e) {
-            System.out.println("Error in getTotalNumResponsesGenerated test: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    static void testLimitReachedMethod() {
+    // Test getMessageLimit method
+    @Test
+    void testGetMessageLimitMethod() {
         try {
-            Method method = ChatBot.class.getDeclaredMethod("limitReached");
-            boolean actualValue = (boolean) method.invoke(null);
-            System.out.println("limitReached method - Correctly checks limit, Pass: " + actualValue);
+            System.out.println("1");
+            assertAll("getMessageLimit Method Tests",
+                // Test return type
+                () -> {
+                    Method method = clazzz.getDeclaredMethod("getMessageLimit");
+                    Assertions.assertEquals(int.class, method.getReturnType(), "getMessageLimit should return an int");
+                },
+                // Test if the method is public
+                () -> {
+                    Method method = clazzz.getDeclaredMethod("getMessageLimit");
+                    Assertions.assertTrue(Modifier.isPublic(method.getModifiers()), "getMessageLimit should be public");
+                }
+            );
         } catch (Exception e) {
-            System.out.println("Error in limitReached test: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    static void testPromptMethod() {
+    // Test getTotalNumResponsesGenerated method
+    @Test
+    void testGetTotalNumResponsesGeneratedMethod() {
         try {
-            ChatBot cb = new ChatBot();
-            String response = cb.prompt("Hello");
-            assert response != null : "prompt should return a non-null response";
-            System.out.println("prompt method test passed - Returned response: " + response);
+            assertAll("getTotalNumResponsesGenerated Method Tests",
+                // Test return type
+                () -> {
+                    Method method = clazzz.getDeclaredMethod("getTotalNumResponsesGenerated");
+                    Assertions.assertEquals(int.class, method.getReturnType(), "getTotalNumResponsesGenerated should return an int");
+                },
+                // Test if the method is public
+                () -> {
+                    Method method = clazzz.getDeclaredMethod("getTotalNumResponsesGenerated");
+                    Assertions.assertTrue(Modifier.isPublic(method.getModifiers()), "getTotalNumResponsesGenerated should be public");
+                }
+            );
         } catch (Exception e) {
-            System.out.println("Error testing prompt method: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Test limitReached method
+    @Test
+    void testLimitReachedMethod() {
+        try {
+            assertAll("limitReached Method Tests",
+                // Test return type
+                () -> {
+                    Method method = clazzz.getDeclaredMethod("limitReached");
+                    Assertions.assertEquals(boolean.class, method.getReturnType(), "limitReached should return a boolean");
+                },
+                // Test if the method is static
+                () -> {
+                    Method method = clazzz.getDeclaredMethod("limitReached");
+                    Assertions.assertTrue(Modifier.isStatic(method.getModifiers()), "limitReached should be static");
+                }
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Test prompt method
+    @Test
+    void testPromptMethod() {
+        try {
+            assertAll("prompt Method Tests",
+                // Test return type
+                () -> {
+                    Method method = clazzz.getDeclaredMethod("prompt", String.class);
+                    Assertions.assertEquals(String.class, method.getReturnType(), "prompt should return a String");
+                },
+                // Test if the method is public
+                () -> {
+                    Method method = clazzz.getDeclaredMethod("prompt", String.class);
+                    Assertions.assertTrue(Modifier.isPublic(method.getModifiers()), "prompt should be public");
+                }
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

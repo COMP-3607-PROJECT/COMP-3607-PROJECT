@@ -1,23 +1,62 @@
 package com.example;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.nio.file.Paths;
 
-/**
- * Hello world!
- *
- */
+import org.junit.jupiter.api.Test;
+
+
+
 public class App 
 {
+
+    public static void callAllMethods(Object obj) {
+        // Get the class of the provided object
+        Class<?> clazz = obj.getClass();
+        
+        // Get all methods (public, private, protected, and package-private)
+        Method[] methods = clazz.getDeclaredMethods();
+        
+        // Loop through all methods
+        for (Method method : methods) {
+            try {
+                // Set the method accessible (useful for private methods)
+                method.setAccessible(true);
+                
+                if (method.getName().startsWith("lambda$") || method.getAnnotation(Test.class) == null) {
+                continue; // Skip lambda or non-test methods
+            }
+                // Skip static methods, or invoke them if needed
+                if (Modifier.isStatic(method.getModifiers())) {
+                    // Invoke static method (no instance needed)
+                    //method.invoke(null);
+                } else {
+                    // Invoke non-static method (need to pass the object instance)
+                    method.invoke(obj);
+                }
+
+                // Optionally, you can print or log the method name if needed
+                System.out.println("Successfully called method: " + method.getName());
+            } catch (Exception e) {
+                // Handle any exceptions during invocation
+                System.out.println("Failed to call method " + method.getName() + " due to: " + e.getMessage());
+            }
+        }
+    }
     public static void main( String[] args )
     {
 
         // new ChatBotTester(null)).main(new String[1]);
         try{
+            // new JUnitTest().testAssertions();
+
             URL classesUrl = Paths.get("C:\\Users\\craft\\Downloads\\javatest").toUri().toURL();
             System.out.println(classesUrl);
             ChatBotTester CBT = new ChatBotTester(classesUrl);
-            CBT.main(new String[1]);
+            CBT.testGetMessageLimitMethod();
+            callAllMethods(CBT);
         }
         catch(Exception e){
             System.out.println("I am the best");
