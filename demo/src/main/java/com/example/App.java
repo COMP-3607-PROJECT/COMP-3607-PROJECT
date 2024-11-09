@@ -55,10 +55,17 @@ public class App
             URL classesUrl = Paths.get("C:\\Users\\craft\\Downloads\\javatest").toUri().toURL();
             //System.out.println(classesUrl);
             ChatBotTester CBT = new ChatBotTester(classesUrl);
+            TestResults t = new TestResults(42);
+            CBT.attach(t);
+            CBT.signal(2, "Win");
+            System.out.println(t.getMarks());
+
+
             //CBT.testGetMessageLimit();
             callAllMethods(CBT);
         }
         catch(Exception e){
+            e.printStackTrace();
             System.out.println("I am the best");
         }
         

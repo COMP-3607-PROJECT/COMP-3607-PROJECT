@@ -1,10 +1,10 @@
 com\example\ChatBot.class
 com\example\ChatBotPlatform.class
 com\example\ChatBotTester.class
-com\example\JUnitTest.class
 com\example\ZipExtractor.class
-com\example\App.class
-com\example\ChatBotPlatformTester.class
 com\example\ChatBotPlatformTest.class
 com\example\ChatBotGenerator.class
 com\example\ChatBotSimulation.class
+com\example\JUnitTest.class
+com\example\App.class
+com\example\ChatBotPlatformTester.class

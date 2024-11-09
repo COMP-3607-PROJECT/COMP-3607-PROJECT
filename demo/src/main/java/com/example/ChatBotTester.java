@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import org.junit.jupiter.api.Test;
 
-class ChatBotTester {
-
+class ChatBotTester implements TestSubject {
+    private TestResultObserver testResultObserver;
     private URLClassLoader urlClassLoader;
     private Class<?> clazzz;
     private Object obj;
@@ -26,6 +26,20 @@ class ChatBotTester {
         }
     }
 
+    
+
+    @Override
+    public void attach(TestResultObserver t) {
+        testResultObserver = t;
+    }
+    public void detach(TestResultObserver t){
+            if(testResultObserver == t)
+                testResultObserver = null;
+    }
+    public void signal(int marks, String feedback){
+        testResultObserver.update(marks, feedback);
+    }
+    
     // Test chatBotName field
     @Test
     void testChatBotName() {

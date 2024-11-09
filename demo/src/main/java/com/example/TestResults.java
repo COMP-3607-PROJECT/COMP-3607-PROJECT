@@ -19,4 +19,8 @@ public class TestResults implements TestResultObserver {
     public int getMarks(){
         return marks;
     }
+
+    public List<String> getFeedback(){
+        return feedback;
+    }
 }

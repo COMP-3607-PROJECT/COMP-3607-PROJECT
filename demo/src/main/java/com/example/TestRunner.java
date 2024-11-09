@@ -12,7 +12,7 @@ public class TestRunner implements TestSubject {
         observers.remove(t);
     }
 
-    public void signal(){
+    public void signal(int marks, String feedback){
 
     }
 }
