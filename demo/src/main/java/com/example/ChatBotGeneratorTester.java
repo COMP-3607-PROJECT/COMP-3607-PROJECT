@@ -29,8 +29,8 @@ public class ChatBotGeneratorTester implements TestSubject {
             if(testResultObserver == t)
                 testResultObserver = null;
     }
-    public void signal(int marks, String feedback){
-        testResultObserver.update(marks, feedback);
+    public void signal(int marks, String feedback, String testName){
+        testResultObserver.update(marks, feedback, testName);
     }
 
     @Test

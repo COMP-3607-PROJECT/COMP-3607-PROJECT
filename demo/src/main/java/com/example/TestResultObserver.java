@@ -1,5 +1,5 @@
 package com.example;
 
 public interface TestResultObserver {
-    void update(int marks, String feedback);
+    void update(int marks, String feedback, String testName);
 }

@@ -1,26 +1,38 @@
 package com.example;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestResults implements TestResultObserver {
-    private int marks;
+    private ArrayList<Integer> marks;
     private List<String> feedback;
+    private List<String> testNames;
 
-    public TestResults(int marks){
-        this.marks = marks;
+    public TestResults(){
+        this.marks = new ArrayList<Integer>();
         feedback = new ArrayList<String>();
+        testNames = new ArrayList<String>();
     }
 
-    public void update(int marks, String feedback){
-        this.marks -= marks;
+    public void update(int marks, String feedback, String testName){
+        this.marks.add(marks);
         this.feedback.add(feedback);
+        testNames.add(testName);
     }
 
-    public int getMarks(){
+    public ArrayList<Integer> getMarks(){
         return marks;
     }
 
     public List<String> getFeedback(){
         return feedback;
+    }
+
+    public String toString(){
+        String output = "";
+        for(int i = 0; i < marks.size(); i++){
+            output += testNames.get(i) + " " + feedback.get(i) + " " + marks.get(i) + "\n";
+        }
+        return output;
     }
 }
