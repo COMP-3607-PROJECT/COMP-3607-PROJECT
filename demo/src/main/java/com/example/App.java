@@ -55,6 +55,9 @@ public class App
             URL classesUrl = Paths.get("C:\\Users\\craft\\Downloads\\javatest").toUri().toURL();
             //System.out.println(classesUrl);
             ChatBotTester CBT = new ChatBotTester(classesUrl);
+            ChatBotPlatformTester CBPT = new ChatBotPlatformTester(classesUrl);
+            ChatBotGeneratorTester CBGT = new ChatBotGeneratorTester(classesUrl);
+            callAllMethods(CBGT);
             TestResults t = new TestResults(42);
             CBT.attach(t);
             CBT.signal(2, "Win");
@@ -62,7 +65,7 @@ public class App
 
 
             //CBT.testGetMessageLimit();
-            callAllMethods(CBT);
+            //callAllMethods(CBT);
         }
         catch(Exception e){
             e.printStackTrace();
