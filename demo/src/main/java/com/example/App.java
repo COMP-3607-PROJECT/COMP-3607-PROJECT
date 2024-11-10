@@ -51,13 +51,17 @@ public class App
         // new ChatBotTester(null)).main(new String[1]);
         try{
             // new JUnitTest().testAssertions();
-
+            ChatBotSimulationTester CBST = new ChatBotSimulationTester();
+            //CBST.testPlatformInitialization();
+            CBST.testInteractionAndOutput();
+            //CBST.testChatBotPlatformInstance();
+            //CBST.testChatBotPlatformInstantiation();
             URL classesUrl = Paths.get("C:\\Users\\craft\\Downloads\\javatest").toUri().toURL();
             //System.out.println(classesUrl);
             ChatBotTester CBT = new ChatBotTester(classesUrl);
             ChatBotPlatformTester CBPT = new ChatBotPlatformTester(classesUrl);
             ChatBotGeneratorTester CBGT = new ChatBotGeneratorTester(classesUrl);
-            callAllMethods(CBGT);
+            callAllMethods(CBPT);
             TestResults t = new TestResults(42);
             CBT.attach(t);
             CBT.signal(2, "Win");

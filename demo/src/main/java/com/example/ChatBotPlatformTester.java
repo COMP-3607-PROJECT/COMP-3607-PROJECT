@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.mock;
 
 class ChatBotPlatformTester implements TestSubject {
 
@@ -78,14 +79,14 @@ class ChatBotPlatformTester implements TestSubject {
                 () -> {
                     Object platformInstance = clazz.getDeclaredConstructor().newInstance(); 
                     System.out.println(platformInstance.getClass().getSimpleName());
-                    System.out.println("1");
+                    
                     boolean added = false;
                     try {
                         added = (Boolean)method.invoke(platformInstance, 1);  
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    
+                    Assertions.assertTrue(added);
                     System.out.println(added);
                     System.out.println("1");
                     try {
@@ -99,6 +100,8 @@ class ChatBotPlatformTester implements TestSubject {
                 () -> {
                     System.out.println("1");
                     try {
+                        Class<?> chatBotClazz = urlClassLoader.loadClass("ChatBot");
+                        Object mock = mock(chatBotClazz);
                         Object platformInstance = clazz.getDeclaredConstructor().newInstance(); 
                     for(int i = 0; i < 10; i++)
                         method.invoke(platformInstance, 1);
