@@ -7,13 +7,12 @@ import java.net.URLClassLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ChatBotGeneratorTester implements TestSubject {
-    private TestResultObserver testResultObserver;
+public class ChatBotGeneratorTest  extends TestRunner {
     private URLClassLoader urlClassLoader;
     private Class<?> clazz;
     private Object obj;
 
-    public ChatBotGeneratorTester(URL classesURL) {
+    public ChatBotGeneratorTest(URL classesURL) {
         urlClassLoader = new URLClassLoader(new URL[]{classesURL});
         try {
             clazz = urlClassLoader.loadClass("ChatBotGenerator");
@@ -22,16 +21,6 @@ public class ChatBotGeneratorTester implements TestSubject {
             e.printStackTrace();
         }
     }
-    public void attach(TestResultObserver t) {
-        testResultObserver = t;
-    }
-    public void detach(TestResultObserver t){
-            if(testResultObserver == t)
-                testResultObserver = null;
-    }
-    public void signal(int marks, String feedback, String testName){
-        testResultObserver.update(marks, feedback, testName);
-    }
 
     @Test
     public void testGenerateChatBotLLM(){
@@ -39,15 +28,11 @@ public class ChatBotGeneratorTester implements TestSubject {
             Method method = clazz.getDeclaredMethod("generateChatBotLLM", int.class);
             method.setAccessible(true);
             Object generator = clazz.getDeclaredConstructor().newInstance();
+            try{
         Assertions.assertAll(
-            () -> {
-                try {
+            () -> {                
                 String name = (String)method.invoke(null, 1);
-                Assertions.assertTrue(name.equals("LLaMa"));}
-                catch(Exception e){
-                    e.printStackTrace();
-                }
-            },
+                Assertions.assertTrue(name.equals("LLaMa"));},
             () -> {
                 String name = (String)method.invoke(generator, 2);
                 Assertions.assertTrue(name.equals("Mistral7B"));
@@ -73,11 +58,15 @@ public class ChatBotGeneratorTester implements TestSubject {
                 String name = (String)method.invoke(generator, 0);
                 Assertions.assertTrue(name.equals("ChatGPT-3.5"));
             }
-        );
-        } catch (Exception e) {
-            e.printStackTrace();
+        );}
+        catch(AssertionError e){
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
-        
+        } catch (Exception e) {
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
+        }
+        signal(7, Thread.currentThread().getStackTrace()[1].getMethodName());
+      
            
     }
 }

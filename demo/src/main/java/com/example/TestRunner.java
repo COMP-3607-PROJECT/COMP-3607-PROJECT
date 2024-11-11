@@ -1,18 +1,19 @@
 package com.example;
-import java.util.List;
 public class TestRunner implements TestSubject {
-    private List<TestResultObserver> observers;
+    private TestResultObserver testResultObserver;
 
     public void attach(TestResultObserver t){
-        observers.add(t);
+        if( testResultObserver == null)
+            testResultObserver = t;
 
     }
 
     public void detach(TestResultObserver t){
-        observers.remove(t);
+        if(testResultObserver == t)
+            testResultObserver = null;
     }
 
-    public void signal(int marks, String feedback, String testName){
-
+    public void signal(int marks, String feedback){
+        testResultObserver.update(marks, feedback, this.getClass().getSimpleName());
     }
 }

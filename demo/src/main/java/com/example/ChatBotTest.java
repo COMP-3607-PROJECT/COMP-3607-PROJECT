@@ -10,36 +10,21 @@ import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import org.junit.jupiter.api.Test;
 
-class ChatBotTester implements TestSubject {
-    private TestResultObserver testResultObserver;
+class ChatBotTest extends TestRunner {
     private URLClassLoader urlClassLoader;
     private Class<?> clazzz;
-    private Object obj;
 
-    public ChatBotTester(URL classesURL) {
+    public ChatBotTest(URL classesURL) throws Exception {
         urlClassLoader = new URLClassLoader(new URL[]{classesURL});
         try {
             clazzz = urlClassLoader.loadClass("ChatBot");
-            obj = clazzz.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             e.printStackTrace();
+            throw new Exception();
         }
     }
 
-    
-
-    @Override
-    public void attach(TestResultObserver t) {
-        testResultObserver = t;
-    }
-    public void detach(TestResultObserver t){
-            if(testResultObserver == t)
-                testResultObserver = null;
-    }
-    public void signal(int marks, String feedback, String testName){
-        testResultObserver.update(marks, feedback, testName);
-    }
-    
+       
     // Test chatBotName field
     @Test
     void testChatBotName() {
@@ -55,6 +40,7 @@ class ChatBotTester implements TestSubject {
                 }
             );
         } catch (Exception e) {
+            signal(0, null);
             e.printStackTrace();
         }
     }

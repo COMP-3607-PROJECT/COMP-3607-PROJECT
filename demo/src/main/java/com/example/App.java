@@ -47,25 +47,31 @@ public class App
     }
     public static void main( String[] args )
     {
-
         // new ChatBotTester(null)).main(new String[1]);
         try{
+            System.out.println(ChatBot.class.getSimpleName());
             // new JUnitTest().testAssertions();
-            ChatBotSimulationTester CBST = new ChatBotSimulationTester();
+            ChatBotSimulationTest CBST = new ChatBotSimulationTest();
+            System.out.println(CBST.getClass().getSimpleName());
             //CBST.testPlatformInitialization();
-            CBST.testInteractionAndOutput();
+            //CBST.testInteractionAndOutput();
             //CBST.testChatBotPlatformInstance();
             //CBST.testChatBotPlatformInstantiation();
             URL classesUrl = Paths.get("C:\\Users\\craft\\Downloads\\javatest").toUri().toURL();
             //System.out.println(classesUrl);
-            ChatBotTester CBT = new ChatBotTester(classesUrl);
-            ChatBotPlatformTester CBPT = new ChatBotPlatformTester(classesUrl);
-            ChatBotGeneratorTester CBGT = new ChatBotGeneratorTester(classesUrl);
-            callAllMethods(CBPT);
+            ChatBotTest CBT = new ChatBotTest(classesUrl);
+            ChatBotPlatformTest CBPT = new ChatBotPlatformTest(classesUrl);
+            ChatBotGeneratorTest CBGT = new ChatBotGeneratorTest(classesUrl);
+            TestResults tt = new TestResults();
+            CBGT.attach(tt);
+            CBGT.testGenerateChatBotLLM();
+            //callAllMethods(CBGT);
+            System.out.println(tt);
+
             TestResults t = new TestResults();
             CBT.attach(t);
-            CBT.signal(2, "Win", "Test");
-            CBT.signal(2, "Win", "Test");
+            CBT.signal(2, "Win");
+            CBT.signal(2, "Win");
             System.out.println(t);
 
 
