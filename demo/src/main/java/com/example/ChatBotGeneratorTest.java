@@ -1,6 +1,7 @@
 package com.example;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -8,18 +9,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class ChatBotGeneratorTest  extends TestRunner {
-    private URLClassLoader urlClassLoader;
-    private Class<?> clazz;
-    private Object obj;
+    private final URLClassLoader urlClassLoader;
+    private final Class<?> clazz;
 
-    public ChatBotGeneratorTest(URL classesURL) {
+    public ChatBotGeneratorTest(URL classesURL) throws ClassNotFoundException {
         urlClassLoader = new URLClassLoader(new URL[]{classesURL});
-        try {
-            clazz = urlClassLoader.loadClass("ChatBotGenerator");
-            obj = clazz.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        clazz = urlClassLoader.loadClass("ChatBotGenerator");    
     }
 
     @Test
@@ -57,15 +52,19 @@ public class ChatBotGeneratorTest  extends TestRunner {
             () -> {
                 String name = (String)method.invoke(generator, 0);
                 Assertions.assertTrue(name.equals("ChatGPT-3.5"));
-            }
-        );}
+            },
+            () -> Assertions.assertTrue(Modifier.isStatic(method.getModifiers())),
+            () -> Assertions.assertTrue(method.getReturnType() == String.class)
+        );
+        signal(7, Thread.currentThread().getStackTrace()[1].getMethodName());
+    }
         catch(AssertionError e){
             signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
         } catch (Exception e) {
             signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
-        signal(7, Thread.currentThread().getStackTrace()[1].getMethodName());
+        
       
            
     }

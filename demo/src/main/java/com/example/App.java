@@ -63,16 +63,16 @@ public class App
             ChatBotPlatformTest CBPT = new ChatBotPlatformTest(classesUrl);
             ChatBotGeneratorTest CBGT = new ChatBotGeneratorTest(classesUrl);
             TestResults tt = new TestResults();
-            CBGT.attach(tt);
-            CBGT.testGenerateChatBotLLM();
-            //callAllMethods(CBGT);
+            CBT.attach(tt);
+            //CBGT.testGenerateChatBotLLM();
+            callAllMethods(CBT);
             System.out.println(tt);
 
-            TestResults t = new TestResults();
-            CBT.attach(t);
-            CBT.signal(2, "Win");
-            CBT.signal(2, "Win");
-            System.out.println(t);
+            // TestResults t = new TestResults();
+            // CBT.attach(t);
+            // CBT.signal(2, "Win");
+            // CBT.signal(2, "Win");
+            // System.out.println(t);
 
 
             //CBT.testGetMessageLimit();

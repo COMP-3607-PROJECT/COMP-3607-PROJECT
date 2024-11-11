@@ -12,16 +12,11 @@ import org.junit.jupiter.api.Test;
 
 class ChatBotTest extends TestRunner {
     private URLClassLoader urlClassLoader;
-    private Class<?> clazzz;
+    private Class<?> clazz;
 
-    public ChatBotTest(URL classesURL) throws Exception {
-        urlClassLoader = new URLClassLoader(new URL[]{classesURL});
-        try {
-            clazzz = urlClassLoader.loadClass("ChatBot");
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new Exception();
-        }
+    public ChatBotTest(URL classesURL) throws ClassNotFoundException {
+        urlClassLoader = new URLClassLoader(new URL[]{classesURL});        
+        clazz = urlClassLoader.loadClass("ChatBot");
     }
 
        
@@ -31,16 +26,17 @@ class ChatBotTest extends TestRunner {
         try {
             assertAll("chatBotName Field Tests",
                 () -> {
-                    Field field = clazzz.getDeclaredField("chatBotName");
+                    Field field = clazz.getDeclaredField("chatBotName");
                     Assertions.assertEquals(String.class, field.getType(), "chatBotName should be of type String");
                 },
                 () -> {
-                    Field field = clazzz.getDeclaredField("chatBotName");
+                    Field field = clazz.getDeclaredField("chatBotName");
                     Assertions.assertTrue(Modifier.isPrivate(field.getModifiers()), "chatBotName should be private");
                 }
             );
-        } catch (Exception e) {
-            signal(0, null);
+            signal(1, Thread.currentThread().getStackTrace()[1].getMethodName());
+        } catch (AssertionError e) {
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
             e.printStackTrace();
         }
     }
@@ -51,16 +47,17 @@ class ChatBotTest extends TestRunner {
         try {
             assertAll("numResponsesGenerated Field Tests",
                 () -> {
-                    Field field = clazzz.getDeclaredField("numResponsesGenerated");
+                    Field field = clazz.getDeclaredField("numResponsesGenerated");
                     Assertions.assertEquals(int.class, field.getType(), "numResponsesGenerated should be of type int");
                 },
                 () -> {
-                    Field field = clazzz.getDeclaredField("numResponsesGenerated");
+                    Field field = clazz.getDeclaredField("numResponsesGenerated");
                     Assertions.assertTrue(Modifier.isPrivate(field.getModifiers()), "numResponsesGenerated should be private");
                 }
             );
-        } catch (Exception e) {
-            e.printStackTrace();
+            signal(1, Thread.currentThread().getStackTrace()[1].getMethodName());
+        } catch (AssertionError e) {
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
     }
 
@@ -70,14 +67,19 @@ class ChatBotTest extends TestRunner {
         try {
             assertAll("messageLimit Field Tests",
                 () -> {
-                    Field field = clazzz.getDeclaredField("messageLimit");
+                    Field field = clazz.getDeclaredField("messageLimit");
                     Assertions.assertEquals(int.class, field.getType(), "messageLimit should be of type int");
                 },
                 () -> {
-                    Field field = clazzz.getDeclaredField("messageLimit");
+                    Field field = clazz.getDeclaredField("messageLimit");
                     Assertions.assertTrue(Modifier.isStatic(field.getModifiers()), "messageLimit should be static");
+                },
+                () -> {
+                    Field field = clazz.getDeclaredField("messageLimit");
+                    Assertions.assertTrue(Modifier.isPrivate(field.getModifiers()), "messageLimit should be private");
                 }
             );
+            signal(3, Thread.currentThread().getStackTrace()[1].getMethodName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -89,11 +91,11 @@ class ChatBotTest extends TestRunner {
         try {
             assertAll("messageNumber Field Tests",
                 () -> {
-                    Field field = clazzz.getDeclaredField("messageNumber");
+                    Field field = clazz.getDeclaredField("messageNumber");
                     Assertions.assertEquals(int.class, field.getType(), "messageNumber should be of type int");
                 },
                 () -> {
-                    Field field = clazzz.getDeclaredField("messageNumber");
+                    Field field = clazz.getDeclaredField("messageNumber");
                     Assertions.assertTrue(Modifier.isStatic(field.getModifiers()), "messageNumber should be static");
                 }
             );
@@ -108,11 +110,11 @@ class ChatBotTest extends TestRunner {
         try {
             assertAll("getChatBotName Method Tests",
                 () -> {
-                    Method method = clazzz.getDeclaredMethod("getChatBotName");
+                    Method method = clazz.getDeclaredMethod("getChatBotName");
                     Assertions.assertEquals(String.class, method.getReturnType(), "getChatBotName should return a String");
                 },
                 () -> {
-                    Method method = clazzz.getDeclaredMethod("getChatBotName");
+                    Method method = clazz.getDeclaredMethod("getChatBotName");
                     int modifiers = method.getModifiers();
                     Assertions.assertTrue(
                         Modifier.isPublic(modifiers) || 
@@ -132,11 +134,11 @@ class ChatBotTest extends TestRunner {
         try {
             assertAll("getNumResponsesGenerated Method Tests",
                 () -> {
-                    Method method = clazzz.getDeclaredMethod("getNumResponsesGenerated");
+                    Method method = clazz.getDeclaredMethod("getNumResponsesGenerated");
                     Assertions.assertEquals(int.class, method.getReturnType(), "getNumResponsesGenerated should return an int");
                 },
                 () -> {
-                    Method method = clazzz.getDeclaredMethod("getNumResponsesGenerated");
+                    Method method = clazz.getDeclaredMethod("getNumResponsesGenerated");
                     int modifiers = method.getModifiers();
                     Assertions.assertTrue(
                         Modifier.isPublic(modifiers) || 
@@ -156,11 +158,11 @@ class ChatBotTest extends TestRunner {
         try {
             assertAll("getMessageLimit Method Tests",
                 () -> {
-                    Method method = clazzz.getDeclaredMethod("getMessageLimit");
+                    Method method = clazz.getDeclaredMethod("getMessageLimit");
                     Assertions.assertEquals(int.class, method.getReturnType(), "getMessageLimit should return an int");
                 },
                 () -> {
-                    Method method = clazzz.getDeclaredMethod("getMessageLimit");
+                    Method method = clazz.getDeclaredMethod("getMessageLimit");
                     int modifiers = method.getModifiers();
                     Assertions.assertTrue(
                         Modifier.isPublic(modifiers) || 
@@ -180,11 +182,11 @@ class ChatBotTest extends TestRunner {
         try {
             assertAll("getTotalNumResponsesGenerated Method Tests",
                 () -> {
-                    Method method = clazzz.getDeclaredMethod("getTotalNumResponsesGenerated");
+                    Method method = clazz.getDeclaredMethod("getTotalNumResponsesGenerated");
                     Assertions.assertEquals(int.class, method.getReturnType(), "getTotalNumResponsesGenerated should return an int");
                 },
                 () -> {
-                    Method method = clazzz.getDeclaredMethod("getTotalNumResponsesGenerated");
+                    Method method = clazz.getDeclaredMethod("getTotalNumResponsesGenerated");
                     int modifiers = method.getModifiers();
                     Assertions.assertTrue(
                         Modifier.isPublic(modifiers) || 
@@ -204,11 +206,11 @@ class ChatBotTest extends TestRunner {
         try {
             assertAll("limitReached Method Tests",
                 () -> {
-                    Method method = clazzz.getDeclaredMethod("limitReached");
+                    Method method = clazz.getDeclaredMethod("limitReached");
                     Assertions.assertEquals(boolean.class, method.getReturnType(), "limitReached should return a boolean");
                 },
                 () -> {
-                    Method method = clazzz.getDeclaredMethod("limitReached");
+                    Method method = clazz.getDeclaredMethod("limitReached");
                     Assertions.assertTrue(Modifier.isStatic(method.getModifiers()), "limitReached should be static");
                 }
             );
