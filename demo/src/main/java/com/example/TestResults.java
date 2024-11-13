@@ -24,6 +24,14 @@ public class TestResults implements TestResultObserver {
         return marks;
     }
 
+    public int getTotalMarks(){
+        int sum = 0;
+        for(int mark: marks){
+            sum+=mark;
+        }
+        return sum;
+    }
+
     public List<String> getFeedback(){
         return feedback;
     }

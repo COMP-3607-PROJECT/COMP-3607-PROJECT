@@ -80,8 +80,8 @@ class ChatBotTest extends TestRunner {
                 }
             );
             signal(3, Thread.currentThread().getStackTrace()[1].getMethodName());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (AssertionError e) {
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
     }
 
@@ -99,8 +99,9 @@ class ChatBotTest extends TestRunner {
                     Assertions.assertTrue(Modifier.isStatic(field.getModifiers()), "messageNumber should be static");
                 }
             );
-        } catch (Exception e) {
-            e.printStackTrace();
+            signal(2, Thread.currentThread().getStackTrace()[1].getMethodName());
+        } catch (AssertionError e) {
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
     }
 
@@ -121,10 +122,21 @@ class ChatBotTest extends TestRunner {
                         (!Modifier.isPrivate(modifiers) && !Modifier.isProtected(modifiers) && !Modifier.isPublic(modifiers)),
                         "getChatBotName should be public or package-private"
                     );
+                },
+                () -> {
+                    Object obj = clazz.getDeclaredConstructor().newInstance();
+                    Field field = clazz.getDeclaredField("chatBotName");
+                    field.setAccessible(true);
+                    Method method = clazz.getDeclaredMethod("getChatBotName");
+                    method.setAccessible(true);                    
+                    field.set(obj, "LLaMa");
+                    Assertions.assertTrue(field.get(obj).equals(method.invoke(obj)));
                 }
             );
-        } catch (Exception e) {
+            signal(1, Thread.currentThread().getStackTrace()[1].getMethodName());
+        } catch (AssertionError e) {
             e.printStackTrace();
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
     }
 
@@ -134,7 +146,7 @@ class ChatBotTest extends TestRunner {
         try {
             assertAll("getNumResponsesGenerated Method Tests",
                 () -> {
-                    Method method = clazz.getDeclaredMethod("getNumResponsesGenerated");
+                    Method method = clazz.getDeclaredMethod("getNumResponsessGenerated");
                     Assertions.assertEquals(int.class, method.getReturnType(), "getNumResponsesGenerated should return an int");
                 },
                 () -> {
@@ -145,10 +157,19 @@ class ChatBotTest extends TestRunner {
                         (!Modifier.isPrivate(modifiers) && !Modifier.isProtected(modifiers) && !Modifier.isPublic(modifiers)),
                         "getNumResponsesGenerated should be public or package-private"
                     );
+                },
+                () -> {
+                    Object obj = clazz.getDeclaredConstructor().newInstance();
+                    Method method = clazz.getDeclaredMethod("getNumResponsesGenerated");
+                    Field field = clazz.getDeclaredField("numResponsesGenerated");
+                    method.setAccessible(true);
+                    field.setAccessible(true);
+                    Assertions.assertTrue(field.get(obj).equals(method.invoke(obj)));
                 }
             );
-        } catch (Exception e) {
-            e.printStackTrace();
+            signal(1, Thread.currentThread().getStackTrace()[1].getMethodName());
+        } catch (AssertionError e) {
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
     }
 
@@ -169,8 +190,17 @@ class ChatBotTest extends TestRunner {
                         (!Modifier.isPrivate(modifiers) && !Modifier.isProtected(modifiers) && !Modifier.isPublic(modifiers)),
                         "getMessageLimit should be public or package-private"
                     );
+                },
+                () -> {
+                    Object obj = clazz.getDeclaredConstructor().newInstance();
+                    Method method = clazz.getDeclaredMethod("getMessageLimit");
+                    Field field = clazz.getDeclaredField("messageLimit");
+                    method.setAccessible(true);
+                    field.setAccessible(true);
+                    Assertions.assertTrue(field.get(obj).equals(method.invoke(obj)));
                 }
             );
+            signal(0 ,Thread.currentThread().getStackTrace()[1].getMethodName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -193,10 +223,23 @@ class ChatBotTest extends TestRunner {
                         (!Modifier.isPrivate(modifiers) && !Modifier.isProtected(modifiers) && !Modifier.isPublic(modifiers)),
                         "getTotalNumResponsesGenerated should be public or package-private"
                     );
+                },
+                () -> {
+                    Object obj = clazz.getDeclaredConstructor().newInstance();
+                    Method method = clazz.getDeclaredMethod("getTotalNumResponsesGenerated");
+                    Field field = clazz.getDeclaredField("messageNumber");
+                    field.setAccessible(true);
+                    method.setAccessible(true);
+                    field.set(obj, 1);
+                    Assertions.assertTrue(field.get(obj).equals(method.invoke(obj)));
+
                 }
+                
             );
+            signal(2, Thread.currentThread().getStackTrace()[1].getMethodName());
         } catch (Exception e) {
             e.printStackTrace();
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
     }
 
@@ -212,10 +255,29 @@ class ChatBotTest extends TestRunner {
                 () -> {
                     Method method = clazz.getDeclaredMethod("limitReached");
                     Assertions.assertTrue(Modifier.isStatic(method.getModifiers()), "limitReached should be static");
+                },
+                () -> {
+                    Object obj = clazz.getDeclaredConstructor().newInstance();
+                    Method method = clazz.getDeclaredMethod("limitReached");
+                    Field field = clazz.getDeclaredField("messageNumber");
+                    field.setAccessible(true);
+                    method.setAccessible(true);
+                    field.set(null, 10);
+                    Assertions.assertTrue((boolean)method.invoke(obj));
                 }
             );
+            signal(3, Thread.currentThread().getStackTrace()[1].getMethodName());
         } catch (Exception e) {
             e.printStackTrace();
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
+        }
+    }
+
+    @Test
+    void testGenerateResponse(){
+        try {
+            
+        } catch (AssertionError e) {
         }
     }
 }
