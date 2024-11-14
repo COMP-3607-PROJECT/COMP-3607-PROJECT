@@ -350,7 +350,13 @@ class ChatBotTest extends TestRunner {
                     Assertions.assertTrue(Modifier.isPrivate(method.getModifiers()));
                 },
                 () -> {
-                    
+                    Object obj = clazz.getDeclaredConstructor().newInstance();
+                    method.setAccessible(true);
+                    String output = (String)method.invoke(obj);
+                    System.out.println(output);
+                    System.out.println(testResponse("(Message# 2)            R        esponse from ChatGPT-3.5   >>generatedTextHere"));
+                    Assertions.assertTrue(testResponse(output));
+                    System.out.println("1");
                 }
             );
             signal(5, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -368,20 +374,49 @@ class ChatBotTest extends TestRunner {
     void testPrompt(){
         try {
             Method method = clazz.getDeclaredMethod("prompt", String.class);
-            Object obj = clazz.getDeclaredConstructor().newInstance();
-            method.setAccessible(true);
-            String output = (String)method.invoke(obj, "1");
-            System.out.println(output);
-            System.out.println(testResponse("(Message# 2)            R        esponse from ChatGPT-3.5   >>generatedTextHere"));
-            Assertions.assertTrue(testResponse(output));
-            System.out.println("1");
-            signal(4, Thread.currentThread().getStackTrace()[1].getMethodName());
+            Assertions.assertAll(
+                () -> {
+                    Assertions.assertTrue(isPublic(method));
+                },
+                () -> {
+                    Object obj = clazz.getDeclaredConstructor().newInstance();
+                    method.setAccessible(true);
+                    String output = (String)method.invoke(obj, "1");
+                    System.out.println(output);
+                    System.out.println(testResponse("(Message# 2)            R        esponse from ChatGPT-3.5   >>generatedTextHere"));
+                    Assertions.assertTrue(testResponse(output));
+                    System.out.println("1");
+                    
+                },
+                () -> {
+                    Object obj = clazz.getDeclaredConstructor().newInstance();
+                    Field field = clazz.getDeclaredField("messageNumber");
+                    field.setAccessible(true);
+                    field.set(obj, 10);
+                    Assertions.assertTrue(((String)method.invoke(obj, "1")).equals("Daily Limit Reached. Wait 24 hours to resume chatbot usage"));
+                    field.set(obj, 0);
+                }
+            );
+            signal(4, Thread.currentThread().getStackTrace()[1].getMethodName());            
         } catch (AssertionError e) {
             e.printStackTrace();
             signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
         catch (Exception e){
             signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
+        }
+    }
+
+    @Test
+    void testToString(){
+        try {
+            Method method = clazz.getDeclaredMethod("toString");
+            Assertions.assertTrue(isPublic(method));
+            Assertions.assertTrue(true);
+        } catch (AssertionError e) {
+        }
+        catch(Exception e){
+            
         }
     }
 }
