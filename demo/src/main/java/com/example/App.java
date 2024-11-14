@@ -17,7 +17,7 @@ public class App {
         //     frame.setLocationRelativeTo(null);
         //     frame.setVisible(true);
         // });
-        Path filePath = Paths.get("C:\\Users\\craft\\Downloads\\javatest");
+        Path filePath = Paths.get("javafiles");
         URL fileUrl = filePath.toUri().toURL();
         ChatBotTest cbt = new ChatBotTest(fileUrl);
         TestResults t = new TestResults();
