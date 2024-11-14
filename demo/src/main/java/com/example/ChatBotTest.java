@@ -5,6 +5,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -19,6 +23,36 @@ class ChatBotTest extends TestRunner {
         clazz = urlClassLoader.loadClass("ChatBot");
     }
 
+    private boolean isPublic(Method method){
+        int mod = method.getModifiers();
+        return Modifier.isPublic(mod) || (!Modifier.isPrivate(mod) && !Modifier.isPublic(mod) && !Modifier.isProtected(mod)); 
+        //Additionally checks if the method is package protected;
+    }
+
+    private boolean testResponse(String output) {
+        // List of allowed models
+        List<String> allowedModels = Arrays.asList("LLaMa", "Mistral7B", "Bard", "Claude", "Solar", "ChatGPT-3.5");
+
+        // Trim the output string to remove all whitespaces from the beginning and end
+        output = output.trim().replaceAll("\\s+", ""); // Remove all internal spaces as well
+
+        // Regular expression to match "(Message#<number>)Response from<model>>generatedTextHere"
+        String regex = "^\\(Message#(1|2|3|4|5|6|7|8|9|10)\\)Responsefrom(LLaMa|Mistral7B|Bard|Claude|Solar|ChatGPT-3.5)>>generatedTextHere$";
+        
+        // Compile and match against the regex
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(output);
+        
+        if (matcher.matches()) {
+            // Extract the model from the matched group
+            String model = matcher.group(2);
+
+            // Verify if the model is in the list of allowed models
+            return allowedModels.contains(model);
+        }
+        
+        return false; // No match
+    }
        
     // Test chatBotName field
     @Test
@@ -274,10 +308,80 @@ class ChatBotTest extends TestRunner {
     }
 
     @Test
+    void testGetTotalNumMessagesRemaining(){
+        try {
+            Object obj = clazz.getDeclaredConstructor().newInstance();
+            Field field = clazz.getDeclaredField("messageNumber");
+            field.setAccessible(true);
+            Method method = clazz.getDeclaredMethod("getTotalNumMessagesRemaining");
+            method.setAccessible(true);
+            Assertions.assertTrue(isPublic(method));
+            
+            Assertions.assertTrue((Modifier.isStatic(method.getModifiers())));
+            
+            Assertions.assertTrue(method.getReturnType() == int.class);
+            //System.out.println((Integer)field.get(null));
+            //System.out.println(method.invoke(obj));
+            Assertions.assertTrue((Integer)method.invoke(null) == 10);
+            //System.out.println("1");
+            field.set(obj, 10);
+            Assertions.assertTrue((int)method.invoke(obj) == 0);
+            field.set(obj, 0);
+            signal(3, Thread.currentThread().getStackTrace()[1].getMethodName());
+        } catch (AssertionError e) {
+            e.printStackTrace();
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
+        }
+    }
+
+    @Test
     void testGenerateResponse(){
         try {
-            
+            Method method = clazz.getDeclaredMethod("generateResponse");
+            Assertions.assertAll(
+                () ->{
+                    Assertions.assertTrue(method.getReturnType() == String.class);
+                },
+                () -> {
+                    Assertions.assertTrue(Modifier.isPrivate(method.getModifiers()));
+                },
+                () -> {
+                    
+                }
+            );
+            signal(5, Thread.currentThread().getStackTrace()[1].getMethodName());
         } catch (AssertionError e) {
+            e.printStackTrace();
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
+        }
+        catch (Exception e ){
+            e.printStackTrace();
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
+        }
+    }
+
+    @Test
+    void testPrompt(){
+        try {
+            Method method = clazz.getDeclaredMethod("prompt", String.class);
+            Object obj = clazz.getDeclaredConstructor().newInstance();
+            method.setAccessible(true);
+            String output = (String)method.invoke(obj, "1");
+            System.out.println(output);
+            System.out.println(testResponse("(Message# 2)            R        esponse from ChatGPT-3.5   >>generatedTextHere"));
+            Assertions.assertTrue(testResponse(output));
+            System.out.println("1");
+            signal(4, Thread.currentThread().getStackTrace()[1].getMethodName());
+        } catch (AssertionError e) {
+            e.printStackTrace();
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
+        }
+        catch (Exception e){
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
     }
 }

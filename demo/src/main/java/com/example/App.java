@@ -22,7 +22,12 @@ public class App {
         ChatBotTest cbt = new ChatBotTest(fileUrl);
         TestResults t = new TestResults();
         cbt.attach(t);
-        cbt.testLimitReached();
+        
+        cbt.testGetTotalNumMessagesRemaining();
+        cbt.testGenerateResponse();
+        cbt.testGetTotalNumResponsesGenerated();
+        cbt.testPrompt();
+        
         System.out.println(t);
     }
 }
