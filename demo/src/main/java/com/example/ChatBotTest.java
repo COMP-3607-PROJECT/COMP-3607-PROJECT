@@ -29,6 +29,23 @@ class ChatBotTest extends TestRunner {
         //Additionally checks if the method is package protected;
     }
 
+    private boolean isValidMessageFormat(String message) {
+        String[] models = {"LLaMa", "Mistral7B", "Bard", "Claude", "Solar", "ChatGPT-3.5"};
+        String modelsPattern = String.join("|", models);
+        String regex = "ChatBotName:(" + modelsPattern + ")NumberMessagesUsed:(\\d{1,2})";
+
+        message = message.replaceAll("\\s+", "");
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(message);
+
+        if (matcher.matches()) {
+            int number = Integer.parseInt(matcher.group(2));
+            return number >= 0 && number <= 10;
+        }
+        return false;
+    }
+
     private boolean testResponse(String output) {
         // List of allowed models
         List<String> allowedModels = Arrays.asList("LLaMa", "Mistral7B", "Bard", "Claude", "Solar", "ChatGPT-3.5");
@@ -410,13 +427,18 @@ class ChatBotTest extends TestRunner {
     @Test
     void testToString(){
         try {
-            Method method = clazz.getDeclaredMethod("toString");
+            Method method = clazz.getDeclaredMethod("toStrng");
             Assertions.assertTrue(isPublic(method));
             Assertions.assertTrue(true);
+            method.setAccessible(true);
+            Object obj = clazz.getDeclaredConstructor().newInstance();
+            Assertions.assertTrue(isValidMessageFormat((String)method.invoke(obj)));
+            signal(4, Thread.currentThread().getStackTrace()[1].getMethodName());
         } catch (AssertionError e) {
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
         catch(Exception e){
-            
+            signal(0, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
     }
 }

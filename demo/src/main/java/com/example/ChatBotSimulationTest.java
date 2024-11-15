@@ -3,6 +3,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.AfterEach;
@@ -10,11 +12,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ChatBotSimulationTest {
+public class ChatBotSimulationTest extends TestRunner{
 
     private final PrintStream originalOut = System.out;
     private ByteArrayOutputStream outputStream;
+    private URLClassLoader urlClassLoader;
+    private Class<?> clazz;
 
+    public ChatBotSimulationTest(URL classesURL) throws ClassNotFoundException{
+        urlClassLoader = new URLClassLoader(new URL[]{classesURL});        
+        clazz = urlClassLoader.loadClass("ChatBot");
+    }
+
+    @Test
+    void testHelloWorld(){
+        try {
+            
+        } catch (Throwable e) {
+        }
+    }
 
     @BeforeEach
     void setUp() {

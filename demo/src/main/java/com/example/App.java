@@ -27,6 +27,7 @@ public class App {
         cbt.testGenerateResponse();
         cbt.testGetTotalNumResponsesGenerated();
         cbt.testPrompt();
+        cbt.testToString();
         
         System.out.println(t);
     }
