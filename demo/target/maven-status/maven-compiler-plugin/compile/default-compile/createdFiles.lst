@@ -5,6 +5,7 @@ com\example\TestResultObserver.class
 com\example\ZipExtractor.class
 com\example\FileChooserDemo.class
 com\example\ChatBotSimulationTest.class
+com\example\validoutput\ValidOutputStrategy.class
 com\example\Extractable.class
 com\example\ChatBotPlatformTest.class
 com\example\ChatBotGenerator.class
@@ -12,8 +13,11 @@ com\example\TestResults.class
 com\example\ChatBotSimulation.class
 com\example\ExtractableDirectory.class
 com\example\File.class
+com\example\validoutput\ValidHelloWorld.class
 com\example\ExtractableFile.class
 com\example\App.class
+com\example\validoutput\ValidBotsList.class
+com\example\validoutput\ValidResponse.class
 com\example\ChatBotTest.class
 com\example\TestRunner.class
 com\example\TestSubject.class

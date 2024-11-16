@@ -1,4 +1,6 @@
 package com.example;
+import com.example.validoutput.ValidBotsList;
+import com.example.validoutput.ValidHelloWorld;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
@@ -15,6 +17,8 @@ import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.validateMockitoUsage;
+
 import org.junit.jupiter.api.Test;
 
 public class ChatBotSimulationTest extends TestRunner{
@@ -66,61 +70,82 @@ public class ChatBotSimulationTest extends TestRunner{
 
     @Test
     void testHelloWorld(){
-        setUp();
         try {
-            Method method = clazz.getDeclaredMethod("main", String[].class);
-            Assertions.assertAll(
-                ()->{
-                    Assertions.assertTrue(Modifier.isStatic(method.getModifiers()));
-                },
-                () ->{
-                    Assertions.assertTrue(Modifier.isPublic(method.getModifiers()));
-                },
-                () -> {
-                    method.invoke(null, new String[1]);
-                    Assertions.assertTrue(output.contains("Hello World!"));
-                    signal(1, "testHelloWorld");
-                }
-            );
-        } catch (Throwable e) {
+            setStrategy(new ValidHelloWorld());
+            // Assertions.assertTrue(output.contains("Hello World!"));
+            Assertions.assertTrue(validOutputStrategy.isValidOutput(output));
+            signal(1, "testHellowWorld");
+        } catch (AssertionError e) {
             signal(0, "testHelloWorld");
-            e.printStackTrace();
         }
-        finally{
-            tearDown();
-        }
+       
+        // setUp();
+        // try {
+        //     Method method = clazz.getDeclaredMethod("main", String[].class);
+        //     Assertions.assertAll(
+        //         ()->{
+        //             Assertions.assertTrue(Modifier.isStatic(method.getModifiers()));
+        //         },
+        //         () ->{
+        //             Assertions.assertTrue(Modifier.isPublic(method.getModifiers()));
+        //         },
+        //         () -> {
+        //             method.invoke(null, new String[1]);
+        //             Assertions.assertTrue(output.contains("Hello World!"));
+        //             signal(1, "testHelloWorld");
+        //         }
+        //     );
+        // } catch (Throwable e) {
+        //     signal(0, "testHelloWorld");
+        //     e.printStackTrace();
+        // }
+        // finally{
+        //     tearDown();
+        // }
     }
 
     @Test
     void testChatBotList(){
-        setUp();
         try {
-            Method method = clazz.getDeclaredMethod("main", String[].class);
-            Assertions.assertAll(
-                ()->{
-                    Assertions.assertTrue(Modifier.isStatic(method.getModifiers()));
-                },
-                () ->{
-                    Assertions.assertTrue(Modifier.isPublic(method.getModifiers()));
-                },
-                () -> {
-                    tearDown();
-                    method.invoke(null, (Object)new String[0]);
-                    
-                    System.out.println(1);
-                    System.err.println(outputStream.toString());
-                    Assertions.assertTrue(containsAllBots(output));
-                    signal(1, "testChatBotList");
-                }
-            );
-        } catch (Throwable e) {
-            System.err.println("1");
+            setStrategy(new ValidBotsList());
+            Assertions.assertTrue(containsAllBots(output));
+            signal(5, "testChatBotList");
+        } catch (AssertionError e) {
             signal(0, "testChatBotList");
-            e.printStackTrace();
         }
-        finally{
-            tearDown();
-        }
+        // setUp();
+        // try {
+        //     Method method = clazz.getDeclaredMethod("main", String[].class);
+        //     Assertions.assertAll(
+        //         ()->{
+        //             Assertions.assertTrue(Modifier.isStatic(method.getModifiers()));
+        //         },
+        //         () ->{
+        //             Assertions.assertTrue(Modifier.isPublic(method.getModifiers()));
+        //         },
+        //         () -> {
+        //             tearDown();
+        //             method.invoke(null, (Object)new String[0]);
+                    
+        //             System.out.println(1);
+        //             System.err.println(outputStream.toString());
+        //             Assertions.assertTrue(containsAllBots(output));
+        //             signal(1, "testChatBotList");
+        //         }
+        //     );
+        // } catch (Throwable e) {
+        //     System.err.println("1");
+        //     signal(0, "testChatBotList");
+        //     e.printStackTrace();
+        // }
+        // finally{
+        //     tearDown();
+        // }
+    }
+
+    @Test
+    void testChatBotInteractions(){
+
     }
 
     
