@@ -5,51 +5,42 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class ZipExtractor {
+public class ZipExtractor implements ExplorerContainer {
+    private static List<String> studentDirectories;
 
-    // public static void main(String[] args) {
-    // // Path to the main zip file (submission.zip)
-    // String mainZipFilePath = "C:\\Users\\darri\\OneDrive - The University of the
-    // West Indies, St. Augustine\\Year3\\COMP 3607\\TEST1\\submission.zip";
+    public ZipExtractor() {
+        studentDirectories = new ArrayList<>();
+    }
 
-    // // Get the parent directory of submission.zip
-    // File mainZipFile = new File(mainZipFilePath);
-    // String parentDir = mainZipFile.getParent();
-
-    // try {
-    // // Extract the main zip file (submission.zip)
-    // extractSubmissionZip(mainZipFilePath, parentDir);
-    // System.out.println("Extraction complete.");
-    // } catch (IOException e) {
-    // e.printStackTrace();
-    // }
-    // }
+    public static List<String> getStudentDirectories() {
+        return studentDirectories;
+    }
 
     /**
-     * Extracts the main submission.zip file and handles nested structures.
-     * 
+     * Extracts all zipped folders inside the submission.zip and places them
+     * directly in the parent directory.
+     *
      * @param zipFilePath    The path to the main submission.zip file.
      * @param destinationDir The directory to place extracted contents.
      * @throws IOException
      */
-
     public static void extractSubmissionZip(String zipFilePath, String destinationDir) throws IOException {
         try (ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath))) {
             ZipEntry entry = zipIn.getNextEntry();
             while (entry != null) {
                 String entryName = entry.getName();
 
-                if (entry.isDirectory()) {
-
-                    new File(destinationDir, entryName).mkdirs();
-                } else if (entryName.startsWith("submission/") && entryName.endsWith(".zip")) {
-
-                    File nestedZipFile = new File(destinationDir, entryName);
+                // Only process files ending in .zip
+                if (entryName.endsWith(".zip")) {
+                    File nestedZipFile = new File(destinationDir, new File(entryName).getName());
                     createParentDirs(nestedZipFile);
 
+                    // Write the zipped file to the parent directory
                     try (FileOutputStream fos = new FileOutputStream(nestedZipFile)) {
                         byte[] buffer = new byte[1024];
                         int len;
@@ -57,14 +48,18 @@ public class ZipExtractor {
                             fos.write(buffer, 0, len);
                         }
                     }
-                    System.out.println("Extracted nested zip file: " + nestedZipFile.getName());
+                    System.out.println("Extracted zip file: " + nestedZipFile.getName());
 
-                    // Extract .java files to a folder named after the student zip file
-                    String studentFolderName = nestedZipFile.getName().replace(".zip", "");
-                    File studentFolder = new File(destinationDir, studentFolderName);
-                    studentFolder.mkdirs();
+                    // Unzip the nested zip file into the parent directory
+                    String unzippedFolder = destinationDir + File.separator
+                            + nestedZipFile.getName().replace(".zip", "");
+                    unzipFile(nestedZipFile.getPath(), unzippedFolder);
 
-                    extractJavaFilesFromStudentZip(nestedZipFile.getPath(), studentFolder.getPath());
+                    // Add the directory path to the list
+                    studentDirectories.add(unzippedFolder);
+
+                    // Optionally delete the extracted zip file to keep only its contents
+                    nestedZipFile.delete();
                 }
 
                 zipIn.closeEntry();
@@ -74,36 +69,33 @@ public class ZipExtractor {
     }
 
     /**
-     * Extracts all .java files from a student's zip file into a specified folder.
+     * Unzips a zip file into a specified directory.
      *
-     * @param zipFilePath    The path to the student's zip file.
-     * @param destinationDir The directory (student folder) to place extracted .java
-     *                       files.
+     * @param zipFilePath    The path to the zip file to unzip.
+     * @param destinationDir The directory to extract the zip file contents into.
      * @throws IOException
      */
-    private static void extractJavaFilesFromStudentZip(String zipFilePath, String destinationDir) throws IOException {
+    public static void unzipFile(String zipFilePath, String destinationDir) throws IOException {
         try (ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath))) {
             ZipEntry entry = zipIn.getNextEntry();
             while (entry != null) {
-                String fileName = entry.getName();
-                String filePath = destinationDir + File.separator + fileName;
+                File file = new File(destinationDir, entry.getName());
 
-                if (!entry.isDirectory() && fileName.endsWith(".java")) {
+                if (entry.isDirectory()) {
+                    file.mkdirs();
+                } else {
                     // Ensure parent directories exist
-                    File javaFile = new File(filePath);
-                    createParentDirs(javaFile);
+                    file.getParentFile().mkdirs();
 
-                    // Extract the .java file into the student's specific folder
-                    try (FileOutputStream fos = new FileOutputStream(javaFile)) {
+                    // Write the file to disk
+                    try (FileOutputStream fos = new FileOutputStream(file)) {
                         byte[] buffer = new byte[1024];
                         int len;
                         while ((len = zipIn.read(buffer)) > 0) {
                             fos.write(buffer, 0, len);
                         }
                     }
-                    System.out.println("Extracted Java file: " + javaFile.getName() + " to " + destinationDir);
                 }
-
                 zipIn.closeEntry();
                 entry = zipIn.getNextEntry();
             }
@@ -112,7 +104,7 @@ public class ZipExtractor {
 
     /**
      * Creates any missing parent directories for a given file.
-     * 
+     *
      * @param file The file for which to create missing parent directories.
      */
     public static void createParentDirs(File file) {
@@ -121,4 +113,10 @@ public class ZipExtractor {
             parentDir.mkdirs();
         }
     }
+
+    public DirectoryIterator createDirectoryIterator() {
+        return new DirectoryIterator(studentDirectories);
+
+    }
+
 }
