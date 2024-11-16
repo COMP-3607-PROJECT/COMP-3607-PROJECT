@@ -315,6 +315,7 @@ class ChatBotTest extends TestRunner {
                     method.setAccessible(true);
                     field.set(null, 10);
                     Assertions.assertTrue((boolean)method.invoke(obj));
+                    field.set(null, 0);
                 }
             );
             signal(3, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -370,10 +371,10 @@ class ChatBotTest extends TestRunner {
                     Object obj = clazz.getDeclaredConstructor().newInstance();
                     method.setAccessible(true);
                     String output = (String)method.invoke(obj);
-                    System.out.println(output);
-                    System.out.println(testResponse("(Message# 2)            R        esponse from ChatGPT-3.5   >>generatedTextHere"));
+                    // System.out.println(output);
+                    // System.out.println(testResponse("(Message# 2)            R        esponse from ChatGPT-3.5   >>generatedTextHere"));
                     Assertions.assertTrue(testResponse(output));
-                    System.out.println("1");
+                    // System.out.println("1");
                 }
             );
             signal(5, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -399,10 +400,10 @@ class ChatBotTest extends TestRunner {
                     Object obj = clazz.getDeclaredConstructor().newInstance();
                     method.setAccessible(true);
                     String output = (String)method.invoke(obj, "1");
-                    System.out.println(output);
-                    System.out.println(testResponse("(Message# 2)            R        esponse from ChatGPT-3.5   >>generatedTextHere"));
+                    // System.out.println(output);
+                    // System.out.println(testResponse("(Message# 2)            R        esponse from ChatGPT-3.5   >>generatedTextHere"));
                     Assertions.assertTrue(testResponse(output));
-                    System.out.println("1");
+                    // System.out.println("1");
                     
                 },
                 () -> {
@@ -427,7 +428,7 @@ class ChatBotTest extends TestRunner {
     @Test
     void testToString(){
         try {
-            Method method = clazz.getDeclaredMethod("toStrng");
+            Method method = clazz.getDeclaredMethod("toString");
             Assertions.assertTrue(isPublic(method));
             Assertions.assertTrue(true);
             method.setAccessible(true);

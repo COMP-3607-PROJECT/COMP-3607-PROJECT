@@ -17,7 +17,7 @@ public class App {
         //     frame.setLocationRelativeTo(null);
         //     frame.setVisible(true);
         // });
-        Path filePath = Paths.get("javafiles");
+        Path filePath = Paths.get("demo\\javafiles");
         URL fileUrl = filePath.toUri().toURL();
         ChatBotTest cbt = new ChatBotTest(fileUrl);
         TestResults t = new TestResults();
@@ -28,6 +28,13 @@ public class App {
         cbt.testGetTotalNumResponsesGenerated();
         cbt.testPrompt();
         cbt.testToString();
+        ChatBotPlatformTest cbpt = new ChatBotPlatformTest(fileUrl);
+        ChatBotSimulationTest cbst = new ChatBotSimulationTest(fileUrl);
+        cbpt.attach(t);
+        cbst.attach(t);
+        cbpt.testBotsField();
+        cbpt.testInteractWithBot();
+        cbst.testHelloWorld();
         
         System.out.println(t);
     }

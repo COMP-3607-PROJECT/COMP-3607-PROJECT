@@ -6,6 +6,10 @@ import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,6 +37,36 @@ class ChatBotPlatformTest extends TestRunner {
         //Additionally checks if the method is package protected;
     }
 
+    private boolean testResponse(String output) {
+        List<String> allowedModels = Arrays.asList("LLaMa", "Mistral7B", "Bard", "Claude", "Solar", "ChatGPT-3.5");
+        output = output.trim().replaceAll("\\s+", "");
+    
+        String modelResponseRegex = "^\\(Message#(1|2|3|4|5|6|7|8|9|10)\\)Responsefrom(LLaMa|Mistral7B|Bard|Claude|Solar|ChatGPT-3.5)>>generatedTextHere$";
+        String botErrorRegex = "^IncorrectBotNumber\\((\\d+)\\)Selected\\.Tryagain$";
+    
+        Pattern modelPattern = Pattern.compile(modelResponseRegex);
+        Matcher modelMatcher = modelPattern.matcher(output);
+        if (modelMatcher.matches()) {
+            String model = modelMatcher.group(2);
+            return allowedModels.contains(model);
+        }
+    
+        Pattern botErrorPattern = Pattern.compile(botErrorRegex);
+        Matcher botErrorMatcher = botErrorPattern.matcher(output);
+        if (botErrorMatcher.matches()) {
+            String number = botErrorMatcher.group(1);
+            try {
+                int botNumber = Integer.parseInt(number);
+                return botNumber > 0;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+    
+        return false;
+    }
+
+
     @Test
     void testBotsField() {
         try {
@@ -46,8 +80,13 @@ class ChatBotPlatformTest extends TestRunner {
                     Assertions.assertTrue(Modifier.isPrivate(field.getModifiers()), "bots should be private");
                 }
             );
+            signal(2, "testBotsField");
         } catch (Exception e) {
+            signal(0, "testBotsField");
             e.printStackTrace();
+        }
+        catch(AssertionError e){
+            signal(0, "testBotsField");
         }
     }
 
@@ -104,6 +143,35 @@ class ChatBotPlatformTest extends TestRunner {
             );
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testInteractWithBot(){
+        try {
+            Method method = clazz.getDeclaredMethod("interactWithBot", int.class, String.class);
+            Assertions.assertAll(
+                () -> {
+                    Assertions.assertTrue(method.getReturnType() == String.class);
+                },
+                () -> {
+                    Assertions.assertTrue(isPublic(method));
+                },
+                () -> {
+                    Object obj = clazz.getDeclaredConstructor().newInstance();
+                    method.setAccessible(true);
+                    String output = (String)method.invoke(obj, 1, "1");
+                    Assertions.assertTrue(testResponse(output));
+                    
+                }
+            );
+
+            signal(6, "testInteractWithBot");
+        } catch (AssertionError e) {
+            signal(0, "testInteractWithBot");
+        }   
+        catch(Exception e){
+            signal(0, "testInteractWithBot");
         }
     }
 

@@ -3,13 +3,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
 
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ChatBotSimulationTest extends TestRunner{
@@ -21,24 +21,41 @@ public class ChatBotSimulationTest extends TestRunner{
 
     public ChatBotSimulationTest(URL classesURL) throws ClassNotFoundException{
         urlClassLoader = new URLClassLoader(new URL[]{classesURL});        
-        clazz = urlClassLoader.loadClass("ChatBot");
+        clazz = urlClassLoader.loadClass("ChatBotSimulation");
     }
 
     @Test
     void testHelloWorld(){
+        setUp();
         try {
-            
+            Method method = clazz.getDeclaredMethod("main", String[].class);
+            Assertions.assertAll(
+                ()->{
+                    Assertions.assertTrue(Modifier.isStatic(method.getModifiers()));
+                },
+                () ->{
+                    Assertions.assertTrue(Modifier.isPublic(method.getModifiers()));
+                },
+                () -> {
+                    method.invoke(null, new String[1]);
+                    Assertions.assertTrue(outputStream.toString().contains("Hello World!"));
+                    signal(1, "testHelloWorld");
+                }
+            );
         } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        finally{
+            tearDown();
         }
     }
 
-    @BeforeEach
+    
     void setUp() {
         outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream)); // Capture the System.out output
     }
 
-    @AfterEach
     void tearDown() {
         System.setOut(originalOut); // Restore the original System.out
     }
