@@ -7,6 +7,11 @@ import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,10 +23,45 @@ public class ChatBotSimulationTest extends TestRunner{
     private ByteArrayOutputStream outputStream;
     private URLClassLoader urlClassLoader;
     private Class<?> clazz;
+    private final String output;
 
     public ChatBotSimulationTest(URL classesURL) throws ClassNotFoundException{
         urlClassLoader = new URLClassLoader(new URL[]{classesURL});        
         clazz = urlClassLoader.loadClass("ChatBotSimulation");
+        output = setUpOutput();
+    }
+
+    public String setUpOutput(){
+        setUp();
+        try {
+            Method method = clazz.getDeclaredMethod("main", String[].class);
+            method.invoke(null, new String[1]);            
+            return outputStream.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Fail";
+        }
+        finally{
+            tearDown();
+        }
+        
+        
+    }
+    private boolean containsAllBots(String input) {
+        if(input == null){
+            return false;
+        }
+        input = input.replaceAll("\\s+", "");
+        List<String> expectedBots = Arrays.asList("ChatGPT-3.5", "LLaMa", "Mistral7B", "Bard", "Claude", "Solar");
+        Set<String> foundBots = new HashSet<>();
+        String botPattern = "BotNumber:\\d+ChatBotName:([\\w\\-.]+)NumberMessagesUsed:\\d+";
+        Pattern pattern = Pattern.compile(botPattern);
+        Matcher matcher = pattern.matcher(input);
+        while (matcher.find()) {
+            String botName = matcher.group(1);
+            foundBots.add(botName);
+        }
+        return foundBots.containsAll(expectedBots);
     }
 
     @Test
@@ -38,11 +78,44 @@ public class ChatBotSimulationTest extends TestRunner{
                 },
                 () -> {
                     method.invoke(null, new String[1]);
-                    Assertions.assertTrue(outputStream.toString().contains("Hello World!"));
+                    Assertions.assertTrue(output.contains("Hello World!"));
                     signal(1, "testHelloWorld");
                 }
             );
         } catch (Throwable e) {
+            signal(0, "testHelloWorld");
+            e.printStackTrace();
+        }
+        finally{
+            tearDown();
+        }
+    }
+
+    @Test
+    void testChatBotList(){
+        setUp();
+        try {
+            Method method = clazz.getDeclaredMethod("main", String[].class);
+            Assertions.assertAll(
+                ()->{
+                    Assertions.assertTrue(Modifier.isStatic(method.getModifiers()));
+                },
+                () ->{
+                    Assertions.assertTrue(Modifier.isPublic(method.getModifiers()));
+                },
+                () -> {
+                    tearDown();
+                    method.invoke(null, (Object)new String[0]);
+                    
+                    System.out.println(1);
+                    System.err.println(outputStream.toString());
+                    Assertions.assertTrue(containsAllBots(output));
+                    signal(1, "testChatBotList");
+                }
+            );
+        } catch (Throwable e) {
+            System.err.println("1");
+            signal(0, "testChatBotList");
             e.printStackTrace();
         }
         finally{

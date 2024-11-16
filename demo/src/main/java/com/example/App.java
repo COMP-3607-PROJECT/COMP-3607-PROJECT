@@ -34,7 +34,9 @@ public class App {
         cbst.attach(t);
         cbpt.testBotsField();
         cbpt.testInteractWithBot();
+        // System.out.println(cbst.setUpOutput());
         cbst.testHelloWorld();
+        cbst.testChatBotList();
         
         System.out.println(t);
     }

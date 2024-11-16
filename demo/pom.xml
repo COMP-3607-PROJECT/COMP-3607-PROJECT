@@ -32,13 +32,13 @@
         <artifactId>junit-jupiter-engine</artifactId>
         <version>5.10.0</version> <!-- Replace with the latest version if needed -->
         <scope>compile</scope>
-        </dependency>
+    </dependency>
     <dependency>
-    <groupId>org.mockito</groupId>
-    <artifactId>mockito-core</artifactId>
-    <version>5.5.0</version>
-    <scope>compile</scope>
-</dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>5.5.0</version>
+        <scope>compile</scope>
+    </dependency>
   </dependencies>
   
   <build>
@@ -46,13 +46,20 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>3.10.1</version> <!-- Updated plugin version -->
         <configuration>
           <source>23</source>
           <target>23</target>
         </configuration>
       </plugin>
-      <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-surefire-plugin</artifactId> <version>3.0.0-M5</version> <configuration> <argLine>-ea</argLine> </configuration> </plugin>
+      <plugin> 
+        <groupId>org.apache.maven.plugins</groupId> 
+        <artifactId>maven-surefire-plugin</artifactId> 
+        <version>3.0.0</version> <!-- Updated Surefire plugin version -->
+        <configuration> 
+          <argLine>-ea</argLine> 
+        </configuration> 
+      </plugin>
     </plugins>
   </build>
   
