@@ -7,18 +7,18 @@ import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
 public class Compiler {
-    public static void compile(String folderToCompile) {
+    public static boolean  compile(String folderToCompile) {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         String javaVersion = System.getProperty("java.version");
 
         if (!javaVersion.startsWith("23")) {
             System.err.println("JDK 23 is required. Current version: " + javaVersion);
-            return;
+            return false;
         }
 
         if (compiler == null) {
             System.err.println("JDK not found. Make sure you're running this with a JDK, not a JRE.");
-            return;
+            return false;
         }
 
         String[] fileNamesToCompile = {
@@ -33,7 +33,7 @@ public class Compiler {
 
         if (!folder.isDirectory()) {
             System.err.println("Provided path is not a directory.");
-            return;
+            return false;
         }
 
         for (String fileName : fileNamesToCompile) {
@@ -47,16 +47,16 @@ public class Compiler {
 
         if (validFiles.isEmpty()) {
             System.err.println("No valid files to compile.");
-            return;
+            return false;
         }
 
         String[] filesArray = validFiles.toArray(new String[0]);
         int compilationResult = compiler.run(null, null, null, filesArray);
 
         if (compilationResult == 0) {
-            System.out.println("Compilation successful.");
+            return true;
         } else {
-            System.out.println("Compilation failed.");
+            return false;
         }
     }
 }
