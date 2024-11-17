@@ -1,11 +1,22 @@
 package com.example;
-import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 
 public class FileChooserDemo extends JPanel implements ActionListener {
@@ -83,6 +94,11 @@ public class FileChooserDemo extends JPanel implements ActionListener {
 
             // Trigger the extraction process
             extractZipFile(selectedZipFile);
+            DirectoryIterator studentFolders = new ZipExtractor().createDirectoryIterator();
+            System.out.println(studentFolders.next());
+            while(studentFolders.hasNext()){
+               App.runTests(studentFolders.next());
+            }
          }
       }
 
