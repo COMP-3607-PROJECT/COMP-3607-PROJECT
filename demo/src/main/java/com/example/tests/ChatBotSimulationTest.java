@@ -1,6 +1,8 @@
-package com.example;
+package com.example.tests;
 import com.example.validoutput.ValidBotsList;
 import com.example.validoutput.ValidHelloWorld;
+import com.example.ChatBotSimulation;
+import com.example.TestRunner;
 import com.example.validoutput.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -70,7 +72,7 @@ public class ChatBotSimulationTest extends TestRunner{
     }
 
     @Test
-    void testHelloWorld(){
+    public void testHelloWorld(){
         try {
             setStrategy(new ValidHelloWorld());
             // Assertions.assertTrue(output.contains("Hello World!"));
@@ -106,7 +108,7 @@ public class ChatBotSimulationTest extends TestRunner{
     }
 
     @Test
-    void testChatBotList(){
+    public void testChatBotList(){
         try {
             setStrategy(new ValidBotsList());
             Assertions.assertTrue(containsAllBots(output));
@@ -145,7 +147,7 @@ public class ChatBotSimulationTest extends TestRunner{
     }
 
     @Test
-    void testChatBotInteractions(){
+    public void testChatBotInteractions(){
             try {
                 setStrategy(new ValidInteractions());
                 Assertions.assertTrue(validOutputStrategy.isValidOutput(output));
@@ -157,7 +159,7 @@ public class ChatBotSimulationTest extends TestRunner{
     }
 
     @Test
-    void testFinalChatBotList(){
+    public void testFinalChatBotList(){
         try {
             setStrategy(new ValidBotsList());
             Assertions.assertTrue(validOutputStrategy.isValidOutput(output));
@@ -239,7 +241,7 @@ public class ChatBotSimulationTest extends TestRunner{
     }
 
     @Test
-    void testInteractionAndOutput() throws Exception {
+    public void testInteractionAndOutput() throws Exception {
         // Capture the output of the main method
         outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));

@@ -1,4 +1,4 @@
-package com.example;
+package com.example.tests;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -14,7 +14,9 @@ import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import org.junit.jupiter.api.Test;
 
-class ChatBotTest extends TestRunner {
+import com.example.TestRunner;
+
+public class ChatBotTest extends TestRunner {
     private URLClassLoader urlClassLoader;
     private Class<?> clazz;
 
@@ -73,7 +75,7 @@ class ChatBotTest extends TestRunner {
        
     // Test chatBotName field
     @Test
-    void testChatBotName() {
+    public void testChatBotName() {
         try {
             assertAll("chatBotName Field Tests",
                 () -> {
@@ -94,7 +96,7 @@ class ChatBotTest extends TestRunner {
 
     // Test numResponsesGenerated field
     @Test
-    void testNumResponsesGenerated() {
+    public void testNumResponsesGenerated() {
         try {
             assertAll("numResponsesGenerated Field Tests",
                 () -> {
@@ -114,7 +116,7 @@ class ChatBotTest extends TestRunner {
 
     // Test messageLimit field
     @Test
-    void testMessageLimit() {
+    public void testMessageLimit() {
         try {
             assertAll("messageLimit Field Tests",
                 () -> {
@@ -138,7 +140,7 @@ class ChatBotTest extends TestRunner {
 
     // Test messageNumber field
     @Test
-    void testMessageNumber() {
+    public void testMessageNumber() {
         try {
             assertAll("messageNumber Field Tests",
                 () -> {
@@ -158,7 +160,7 @@ class ChatBotTest extends TestRunner {
 
     // Test getChatBotName method
     @Test
-    void testGetChatBotName() {
+    public void testGetChatBotName() {
         try {
             assertAll("getChatBotName Method Tests",
                 () -> {
@@ -193,7 +195,7 @@ class ChatBotTest extends TestRunner {
 
     // Test getNumResponsesGenerated method
     @Test
-    void testGetNumResponsesGenerated() {
+    public void testGetNumResponsesGenerated() {
         try {
             assertAll("getNumResponsesGenerated Method Tests",
                 () -> {
@@ -226,7 +228,7 @@ class ChatBotTest extends TestRunner {
 
     // Test getMessageLimit method
     @Test
-    void testGetMessageLimit() {
+    public void testGetMessageLimit() {
         try {
             assertAll("getMessageLimit Method Tests",
                 () -> {
@@ -259,7 +261,7 @@ class ChatBotTest extends TestRunner {
 
     // Test getTotalNumResponsesGenerated method
     @Test
-    void testGetTotalNumResponsesGenerated() {
+    public void testGetTotalNumResponsesGenerated() {
         try {
             assertAll("getTotalNumResponsesGenerated Method Tests",
                 () -> {
@@ -296,7 +298,7 @@ class ChatBotTest extends TestRunner {
 
     // Test limitReached method
     @Test
-    void testLimitReached() {
+    public void testLimitReached() {
         try {
             assertAll("limitReached Method Tests",
                 () -> {
@@ -326,7 +328,7 @@ class ChatBotTest extends TestRunner {
     }
 
     @Test
-    void testGetTotalNumMessagesRemaining(){
+    public void testGetTotalNumMessagesRemaining(){
         try {
             Object obj = clazz.getDeclaredConstructor().newInstance();
             Field field = clazz.getDeclaredField("messageNumber");
@@ -357,7 +359,7 @@ class ChatBotTest extends TestRunner {
     }
 
     @Test
-    void testGenerateResponse(){
+    public void testGenerateResponse(){
         try {
             Method method = clazz.getDeclaredMethod("generateResponse");
             Assertions.assertAll(
@@ -389,7 +391,7 @@ class ChatBotTest extends TestRunner {
     }
 
     @Test
-    void testPrompt(){
+    public void testPrompt(){
         try {
             Method method = clazz.getDeclaredMethod("prompt", String.class);
             Assertions.assertAll(
@@ -426,7 +428,7 @@ class ChatBotTest extends TestRunner {
     }
 
     @Test
-    void testToString(){
+    public void testToString(){
         try {
             Method method = clazz.getDeclaredMethod("toString");
             Assertions.assertTrue(isPublic(method));

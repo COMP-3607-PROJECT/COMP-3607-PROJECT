@@ -3,7 +3,9 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.example.validoutput.ValidInteractions;
+import com.example.tests.ChatBotPlatformTest;
+import com.example.tests.ChatBotSimulationTest;
+import com.example.tests.ChatBotTest;
 public class App {
     public static void main(String[] args) throws Exception {
         // SwingUtilities.invokeLater(() -> {
@@ -36,13 +38,10 @@ public class App {
         cbpt.testBotsField();
         cbpt.testAddChatBot();
         cbpt.testInteractWithBot();
-        
         // System.out.println(cbst.setUpOutput());
         cbst.testHelloWorld();
         cbst.testChatBotList();
-        cbst.testChatBotInteractions();
-        System.out.println(new ValidInteractions().isValidOutput("IncorrectBotNumber(10)Selected.Tryagain"));
-        
+        cbst.testChatBotInteractions();  
         System.out.println(t);
     }
 }
