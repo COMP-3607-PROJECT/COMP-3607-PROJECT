@@ -63,9 +63,9 @@ public class ValidInteractions implements ValidOutputStrategy{
             totalMessages++;
         }
     
-        System.out.println("Valid Messages: " + validMessageCount);
-        System.out.println("Bot Errors: " + botErrorCount);
-        System.out.println("Daily Limits: " + dailyLimitCount);
+        // System.out.println("Valid Messages: " + validMessageCount);
+        // System.out.println("Bot Errors: " + botErrorCount);
+        // System.out.println("Daily Limits: " + dailyLimitCount);
     
         return validMessageCount <= 10 && dailyLimitCount <= 5 && totalMessages <= 15;
     }

@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.mock;
 
 import com.example.validoutput.ValidResponse;
 
@@ -104,45 +103,30 @@ class ChatBotPlatformTest extends TestRunner {
                 },
                 () -> {
                     Object platformInstance = clazz.getDeclaredConstructor().newInstance(); 
+                    Class<?> chatBotClass = urlClassLoader.loadClass("ChatBot");
+                    Object chatBot = chatBotClass.getDeclaredConstructor().newInstance();
                     System.out.println(platformInstance.getClass().getSimpleName());
-                    
-                    boolean added = false;
-                    try {
-                        added = (Boolean)method.invoke(platformInstance, 1);  
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    Field bots = clazz.getDeclaredField("bots");
+                    bots.setAccessible(true);
+                    Assertions.assertTrue(((ArrayList) bots.get(obj)).isEmpty());
+                    Assertions.assertTrue((boolean)method.invoke(obj, 1));
+                    Assertions.assertTrue(((ArrayList) bots.get(obj)).size() > 0);
+                    Method prompt = chatBotClass.getDeclaredMethod("prompt", String.class);
+                    prompt.setAccessible(true);
+                    for(int i = 0; i< 10; i++){
+                        prompt.invoke(chatBot, "1");
                     }
-                    Assertions.assertTrue(added);
-                    System.out.println(added);
-                    System.out.println("1");
-                    try {
-                        Assertions.assertTrue(added);
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                    }
-                    
-                    
-                },
-                () -> {
-                    System.out.println("1");
-                    try {
-                        Class<?> chatBotClazz = urlClassLoader.loadClass("ChatBot");
-                        Object mock = mock(chatBotClazz);
-                        Object platformInstance = clazz.getDeclaredConstructor().newInstance(); 
-                    for(int i = 0; i < 10; i++)
-                        method.invoke(platformInstance, 1);
-                    boolean added = (Boolean)method.invoke(platformInstance, 1);
-                    System.out.println(added);
-                    Assertions.assertFalse(added);
-                    
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    
+                    Assertions.assertFalse((boolean)method.invoke(obj, 1));
                 }
             );
+            signal(5, "testAddChatBot");
         } catch (Exception e) {
+            signal(0, "testAddChatBot");
             e.printStackTrace();
+        }
+        catch(AssertionError e){
+            e.printStackTrace();
+            signal(0, "testAddChatBot");
         }
     }
 
