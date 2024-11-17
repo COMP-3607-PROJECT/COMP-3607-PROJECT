@@ -5,8 +5,8 @@ import java.util.List;
 
 public class TestResults implements TestResultObserver {
     private ArrayList<Integer> marks;
-    private List<String> feedback;
-    private List<String> testNames;
+    List<String> feedback;
+    List<String> testNames;
 
     public TestResults(){
         this.marks = new ArrayList<Integer>();
@@ -39,8 +39,12 @@ public class TestResults implements TestResultObserver {
     public String toString(){
         String output = "";
         for(int i = 0; i < marks.size(); i++){
-            output += testNames.get(i) + " " + feedback.get(i) + " " + marks.get(i) + "\n";
+            
+            output += testNames.get(i) + "   " + feedback.get(i) + "   " + marks.get(i) + "\n";
         }
         return output;
     }
 }
+
+
+   

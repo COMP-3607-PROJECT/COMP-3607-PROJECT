@@ -37,7 +37,7 @@ public class App {
         // System.out.println(cbst.setUpOutput());
         cbst.testHelloWorld();
         cbst.testChatBotList();
-        
         System.out.println(t);
+        PDFReportGenerator.generatePDF(t);
     }
 }
