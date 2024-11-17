@@ -160,6 +160,45 @@ class ChatBotPlatformTest extends TestRunner {
         }
     }
 
+    @Test
+    void testGetChatBotList(){
+        try {
+            Method method = clazz.getDeclaredMethod("getChatBotList");
+            Assertions.assertAll(
+                () -> {
+                    Assertions.assertTrue(isPublic(method));
+                },
+                () -> {
+                    Assertions.assertTrue(method.getReturnType() == String.class);
+                },
+                () -> {
+                    Object obj = clazz.getDeclaredConstructor().newInstance();
+                    Class<?> chatBotClass = urlClassLoader.loadClass("ChatBot");
+                    Field bots = clazz.getDeclaredField("bots");
+                    bots.setAccessible(true);
+                    method.setAccessible(true);
+                    ArrayList botsList = (ArrayList)bots.get(obj);
+                    botsList.add(chatBotClass.getDeclaredConstructor().newInstance());
+                    botsList.add(chatBotClass.getDeclaredConstructor().newInstance());
+                    String output = (String)method.invoke(obj);
+                    output = output.replaceAll("\\s", "");
+
+                    System.out.println(output);
+                    boolean validOutput = output.contains("YourChatBotsBotNumber:0ChatBotName:ChatGPT-3.5NumberMessagesUsed:0BotNumber:1ChatBotName:ChatGPT-3.5NumberMessagesUsed:0TotalMessagesUsed:0TotalMessagesRemaining:10");
+
+                    Assertions.assertTrue(validOutput);
+                }
+            );
+        } catch (AssertionError e) {
+            e.printStackTrace();
+            signal(0, "testGetChatBotList");
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            signal(0, "testGetChatBotList");
+        }
+    }
+
     // @Test
     // void testAddChatBotWhenLimitReached() {
     //     boolean added = platform.addChatBot(123);

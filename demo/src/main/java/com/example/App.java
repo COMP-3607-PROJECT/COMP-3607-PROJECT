@@ -32,9 +32,11 @@ public class App {
         ChatBotSimulationTest cbst = new ChatBotSimulationTest(fileUrl);
         cbpt.attach(t);
         cbst.attach(t);
+        cbpt.testGetChatBotList();
         cbpt.testBotsField();
         cbpt.testAddChatBot();
         cbpt.testInteractWithBot();
+        
         // System.out.println(cbst.setUpOutput());
         cbst.testHelloWorld();
         cbst.testChatBotList();
