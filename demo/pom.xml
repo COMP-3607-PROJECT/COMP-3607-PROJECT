@@ -24,13 +24,13 @@
     <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
-        <version>5.10.0</version> <!-- Replace with the latest version if needed -->
+        <version>5.10.0</version> 
         <scope>compile</scope>
     </dependency>
     <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-engine</artifactId>
-        <version>5.10.0</version> <!-- Replace with the latest version if needed -->
+        <version>5.10.0</version> 
         <scope>compile</scope>
     </dependency>
     <dependency>
@@ -39,6 +39,17 @@
         <version>5.5.0</version>
         <scope>compile</scope>
     </dependency>
+    <!-- <dependency>
+    <groupId>com.itextpdf</groupId>
+    <artifactId>itext7-core</artifactId>
+    <version>8.0.5</version> 
+    <scope>compile</scope>
+    </dependency> -->
+    <dependency>
+    <groupId>org.apache.pdfbox</groupId>
+    <artifactId>pdfbox</artifactId>
+    <version>2.0.27</version> <!-- Latest version -->
+</dependency>
   </dependencies>
   
   <build>
@@ -46,7 +57,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.10.1</version> <!-- Updated plugin version -->
+        <version>3.10.1</version> 
         <configuration>
           <source>23</source>
           <target>23</target>
@@ -55,7 +66,7 @@
       <plugin> 
         <groupId>org.apache.maven.plugins</groupId> 
         <artifactId>maven-surefire-plugin</artifactId> 
-        <version>3.0.0</version> <!-- Updated Surefire plugin version -->
+        <version>3.0.0</version> 
         <configuration> 
           <argLine>-ea</argLine> 
         </configuration> 

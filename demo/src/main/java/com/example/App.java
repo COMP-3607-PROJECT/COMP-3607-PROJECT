@@ -32,8 +32,8 @@ public class App {
         while(studentFolders.hasNext()){
             runTests(studentFolders.next());
         }
-        Path filePath = Paths.get("demo\\javafiles");
-        URL fileUrl = filePath.toUri().toURL();
+        // Path filePath = Paths.get("demo\\javafiles");
+        // URL fileUrl = filePath.toUri().toURL();
         // ChatBotTest cbt = new ChatBotTest(fileUrl);
         // TestResults t = new TestResults();
         // cbt.attach(t);
@@ -78,6 +78,12 @@ public class App {
         TestResults cbgtT = new TestResults();
         cbgt.attach(cbgtT);
         runAllTests(cbgt);
+        TestResults[] results = new TestResults[]{
+            cbtT,
+            cbptT,
+            cbgtT,
+            cbstT
+        };
         System.out.println(cbgtT);
         }
         catch(Exception e){
