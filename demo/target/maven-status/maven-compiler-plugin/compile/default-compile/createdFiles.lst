@@ -24,3 +24,4 @@ com\example\ChatBotGenerator.class
 com\example\ExtractableDirectory.class
 com\example\validoutput\ValidHelloWorld.class
 com\example\ExtractableFile.class
+com\example\validoutput\ValidInteractions.class

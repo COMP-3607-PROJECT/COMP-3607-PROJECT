@@ -15,20 +15,20 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
 
+import com.example.validoutput.ValidResponse;
+
 class ChatBotPlatformTest extends TestRunner {
 
     private URLClassLoader urlClassLoader;
-    private Class<?> clazz;
+    private final Class<?> clazz;
+    private final Class<?> chatBotClazz;
     private Object obj;
 
-    public ChatBotPlatformTest(URL classesURL) {
+    public ChatBotPlatformTest(URL classesURL) throws Exception {
         urlClassLoader = new URLClassLoader(new URL[]{classesURL});
-        try {
             clazz = urlClassLoader.loadClass("ChatBotPlatform");
+            chatBotClazz = urlClassLoader.loadClass("ChatBot");
             obj = clazz.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private boolean isPublic(Method method){
@@ -158,10 +158,11 @@ class ChatBotPlatformTest extends TestRunner {
                     Assertions.assertTrue(isPublic(method));
                 },
                 () -> {
+                    setStrategy(new ValidResponse());
                     Object obj = clazz.getDeclaredConstructor().newInstance();
                     method.setAccessible(true);
                     String output = (String)method.invoke(obj, 1, "1");
-                    Assertions.assertTrue(testResponse(output));
+                    Assertions.assertTrue(validOutputStrategy.isValidOutput(output));
                     
                 }
             );

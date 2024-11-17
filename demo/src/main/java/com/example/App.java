@@ -1,9 +1,9 @@
 package com.example;
-
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import com.example.validoutput.ValidInteractions;
 public class App {
     public static void main(String[] args) throws Exception {
         // SwingUtilities.invokeLater(() -> {
@@ -37,6 +37,8 @@ public class App {
         // System.out.println(cbst.setUpOutput());
         cbst.testHelloWorld();
         cbst.testChatBotList();
+        cbst.testChatBotInteractions();
+        System.out.println(new ValidInteractions().isValidOutput("IncorrectBotNumber(10)Selected.Tryagain"));
         
         System.out.println(t);
     }

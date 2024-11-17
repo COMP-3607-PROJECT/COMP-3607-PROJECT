@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class ValidResponse implements ValidOutputStrategy {
     public boolean isValidOutput(String output){
         List<String> allowedModels = Arrays.asList("LLaMa", "Mistral7B", "Bard", "Claude", "Solar", "ChatGPT-3.5");
-        output = output.trim().replaceAll("\\s+", "");
+        output = output.replaceAll("\\s+", "");
     
         String modelResponseRegex = "^\\(Message#(1|2|3|4|5|6|7|8|9|10)\\)Responsefrom(LLaMa|Mistral7B|Bard|Claude|Solar|ChatGPT-3.5)>>generatedTextHere$";
         String botErrorRegex = "^IncorrectBotNumber\\((\\d+)\\)Selected\\.Tryagain$";

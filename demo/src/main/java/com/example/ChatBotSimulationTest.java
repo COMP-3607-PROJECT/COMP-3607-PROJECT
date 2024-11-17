@@ -1,6 +1,7 @@
 package com.example;
 import com.example.validoutput.ValidBotsList;
 import com.example.validoutput.ValidHelloWorld;
+import com.example.validoutput.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
@@ -145,7 +146,25 @@ public class ChatBotSimulationTest extends TestRunner{
 
     @Test
     void testChatBotInteractions(){
+            try {
+                setStrategy(new ValidInteractions());
+                Assertions.assertTrue(validOutputStrategy.isValidOutput(output));
+                signal(4, "testChatBotInteractions");
+            } catch (AssertionError e) {
+                e.printStackTrace();
+                signal(0, "testChatBotInteractions");
+            }
+    }
 
+    @Test
+    void testFinalChatBotList(){
+        try {
+            setStrategy(new ValidBotsList());
+            Assertions.assertTrue(validOutputStrategy.isValidOutput(output));
+            signal(2, "testFinalChatBotList");
+        } catch (Exception e) {
+            signal(0, "testFinalChatbotList");
+        }
     }
 
     
