@@ -1,4 +1,4 @@
-package com.example;
+package com.example.tests;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -14,9 +14,10 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.example.TestRunner;
 import com.example.validoutput.ValidResponse;
 
-class ChatBotPlatformTest extends TestRunner {
+public class ChatBotPlatformTest extends TestRunner {
 
     private URLClassLoader urlClassLoader;
     private final Class<?> clazz;
@@ -67,7 +68,7 @@ class ChatBotPlatformTest extends TestRunner {
 
 
     @Test
-    void testBotsField() {
+    public void testBotsField() {
         try {
             Assertions.assertAll("bots Field Tests",
                 () -> {
@@ -90,7 +91,7 @@ class ChatBotPlatformTest extends TestRunner {
     }
 
     @Test
-    void testAddChatBot() {
+    public void testAddChatBot() {
         try {
             Method method = clazz.getDeclaredMethod("addChatBot", int.class);
             method.setAccessible(true);
@@ -131,7 +132,7 @@ class ChatBotPlatformTest extends TestRunner {
     }
 
     @Test
-    void testInteractWithBot(){
+    public void testInteractWithBot(){
         try {
             Method method = clazz.getDeclaredMethod("interactWithBot", int.class, String.class);
             Assertions.assertAll(
@@ -161,7 +162,7 @@ class ChatBotPlatformTest extends TestRunner {
     }
 
     @Test
-    void testGetChatBotList(){
+    public void testGetChatBotList(){
         try {
             Method method = clazz.getDeclaredMethod("getChatBotList");
             Assertions.assertAll(

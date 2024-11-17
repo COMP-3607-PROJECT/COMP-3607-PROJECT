@@ -1,10 +1,10 @@
+com\example\tests\ChatBotPlatformTest.class
 com\example\ChatBot.class
 com\example\ChatBotPlatform.class
 com\example\TestResultObserver.class
 com\example\FileChooserDemo.class
-com\example\ChatBotSimulationTest.class
 com\example\validoutput\ValidOutputStrategy.class
-com\example\ChatBotPlatformTest.class
+com\example\tests\ChatBotGeneratorTest.class
 com\example\TestResults.class
 com\example\ChatBotSimulation.class
 com\example\DirectoryIterator.class
@@ -12,12 +12,11 @@ com\example\File.class
 com\example\App.class
 com\example\validoutput\ValidBotsList.class
 com\example\validoutput\ValidResponse.class
-com\example\ChatBotTest.class
 com\example\TestRunner.class
 com\example\TestSubject.class
-com\example\ChatBotGeneratorTest.class
 com\example\ExplorerContainer.class
 com\example\ZipExtractor.class
+com\example\tests\ChatBotSimulationTest.class
 com\example\FileExplorerIterator.class
 com\example\Extractable.class
 com\example\ChatBotGenerator.class
@@ -25,3 +24,4 @@ com\example\ExtractableDirectory.class
 com\example\validoutput\ValidHelloWorld.class
 com\example\ExtractableFile.class
 com\example\validoutput\ValidInteractions.class
+com\example\tests\ChatBotTest.class

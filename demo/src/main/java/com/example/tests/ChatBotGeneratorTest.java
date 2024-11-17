@@ -1,4 +1,4 @@
-package com.example;
+package com.example.tests;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -7,6 +7,8 @@ import java.net.URLClassLoader;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import com.example.TestRunner;
 
 public class ChatBotGeneratorTest  extends TestRunner {
     private final URLClassLoader urlClassLoader;
