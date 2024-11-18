@@ -5,7 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-
+import java.util.zip.ZipEntry;
+import java.util.*;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -94,11 +95,35 @@ public class FileChooserDemo extends JPanel implements ActionListener {
 
             // Trigger the extraction process
             extractZipFile(selectedZipFile);
-            DirectoryIterator studentFolders = new ZipExtractor().createDirectoryIterator();
-            System.out.println(studentFolders.next());
-            while(studentFolders.hasNext()){
-               App.runTests(studentFolders.next());
-            }
+            System.out.println(ZipExtractor.getStudentDirectories());
+            List<String> folders = ZipExtractor.getStudentDirectories();
+            int current = 0;
+            for (String folderPath : folders) {
+               // Now, iterate through the subdirectories inside the folder
+               File folder = new File(folderPath);
+               if (folder.exists() && folder.isDirectory()) {
+                   File[] subfolders = folder.listFiles(File::isDirectory); // Get subdirectories only
+                   
+                   // If there are subdirectories, iterate through them
+                   if (subfolders != null) {
+                       for (File subfolder : subfolders) {
+                           String subfolderPath = subfolder.getPath();
+                           System.out.println("Entering subfolder: " + subfolderPath);
+           
+                           // Compile and run tests on the subfolder
+                           Compiler.compile(subfolderPath);
+                           App.runTests(subfolderPath);
+                       }
+                   }
+               }
+           }
+            // DirectoryIterator studentFolders = new ZipExtractor().createDirectoryIterator();
+            // System.out.println(studentFolders.next());
+            // while(studentFolders.hasNext()){
+            //    String folder = stud
+            //    Compiler.compile()
+            //    App.runTests(studentFolders.next());
+            // }
          }
       }
 

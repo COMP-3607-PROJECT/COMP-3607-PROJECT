@@ -29,16 +29,20 @@ public class ZipExtractor implements ExplorerContainer {
      * @throws IOException
      */
     public static void extractSubmissionZip(String zipFilePath, String destinationDir) throws IOException {
+        // Get the parent directory of the zip file
+        String parentDir = new File(zipFilePath).getParent();
+        
         try (ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath))) {
             ZipEntry entry = zipIn.getNextEntry();
             while (entry != null) {
                 String entryName = entry.getName();
-
+    
                 // Only process files ending in .zip
                 if (entryName.endsWith(".zip")) {
-                    File nestedZipFile = new File(destinationDir, new File(entryName).getName());
+                    File nestedZipFile = new File(parentDir, new File(entryName).getName());  // Use the parent directory here
                     createParentDirs(nestedZipFile);
-
+                    System.out.println(parentDir);
+    
                     // Write the zipped file to the parent directory
                     try (FileOutputStream fos = new FileOutputStream(nestedZipFile)) {
                         byte[] buffer = new byte[1024];
@@ -48,19 +52,18 @@ public class ZipExtractor implements ExplorerContainer {
                         }
                     }
                     System.out.println("Extracted zip file: " + nestedZipFile.getName());
-
+    
                     // Unzip the nested zip file into the parent directory
-                    String unzippedFolder = destinationDir + File.separator
-                            + nestedZipFile.getName().replace(".zip", "");
+                    String unzippedFolder = parentDir + File.separator + nestedZipFile.getName().replace(".zip", "");
                     unzipFile(nestedZipFile.getPath(), unzippedFolder);
-
+    
                     // Add the directory path to the list
                     studentDirectories.add(unzippedFolder);
-
+    
                     // Optionally delete the extracted zip file to keep only its contents
                     nestedZipFile.delete();
                 }
-
+    
                 zipIn.closeEntry();
                 entry = zipIn.getNextEntry();
             }
@@ -79,13 +82,13 @@ public class ZipExtractor implements ExplorerContainer {
             ZipEntry entry = zipIn.getNextEntry();
             while (entry != null) {
                 File file = new File(destinationDir, entry.getName());
-
+    
                 if (entry.isDirectory()) {
                     file.mkdirs();
                 } else {
                     // Ensure parent directories exist
                     file.getParentFile().mkdirs();
-
+    
                     // Write the file to disk
                     try (FileOutputStream fos = new FileOutputStream(file)) {
                         byte[] buffer = new byte[1024];
@@ -114,7 +117,7 @@ public class ZipExtractor implements ExplorerContainer {
     }
 
     public DirectoryIterator createDirectoryIterator() {
-        return new DirectoryIterator(studentDirectories);
+        return new DirectoryIterator(getStudentDirectories());
 
     }
 

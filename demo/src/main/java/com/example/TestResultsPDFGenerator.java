@@ -25,7 +25,6 @@ public class TestResultsPDFGenerator {
             for (TestResults testResults : testResultsArray) {
                 String resultString = testResults.toString();
 
-                // Add each line to the document
                 for (String line : resultString.split("\n")) {
                     document.add(new Paragraph(line));
                 }
