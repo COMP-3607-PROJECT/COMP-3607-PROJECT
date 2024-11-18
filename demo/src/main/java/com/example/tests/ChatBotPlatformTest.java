@@ -200,52 +200,5 @@ public class ChatBotPlatformTest extends TestRunner {
         }
     }
 
-    // @Test
-    // void testAddChatBotWhenLimitReached() {
-    //     boolean added = platform.addChatBot(123);
-    //     Assertions.assertFalse(added, "ChatBot should not be added when the limit is reached");
-    // }
-
-    // @Test
-    // void testGetBots() {
-    //     platform.addChatBot(123);
-    //     platform.addChatBot(456);
-    //     ArrayList<ChatBot> bots = platform.getBots();
-    //     Assertions.assertEquals(2, bots.size(), "There should be 2 bots in the platform");
-    // }
-
-    // @Test
-    // void testGetChatBotList() {
-    //     platform.addChatBot(123);
-    //     platform.addChatBot(456);
-        
-    //     String expectedOutput = "------------------\nYour ChatBots\n";
-    //     expectedOutput += "Bot Number: 0 " + platform.getBots().get(0).toString() + "\n";
-    //     expectedOutput += "Bot Number: 1 " + platform.getBots().get(1).toString() + "\n";
-    //     expectedOutput += "Total Messages Used: " + ChatBot.getTotalNumResponsesGenerated() + "\n";
-    //     expectedOutput += "Total Messages Remaining: " + ChatBot.getTotalNumMessagesRemaining() + "\n";  
-    //     expectedOutput += "------------------";
-        
-    //     String actualOutput = platform.getChatBotList();
-    //     Assertions.assertEquals(expectedOutput, actualOutput, "The chat bot list should be formatted correctly.");
-    // }
-
-    // @Test
-    // void testInteractWithBot() {
-    //     platform.addChatBot(123);
-    //     String response = platform.interactWithBot(0, "Hello");
-    //     Assertions.assertNotNull(response, "Response from bot should not be null");
-    // }
-
-    // @Test
-    // void testInteractWithBotInvalidBotNumber() {
-    //     platform.addChatBot(123);
-    //     String response = platform.interactWithBot(999, "Hello");
-    //     Assertions.assertEquals("Incorrect Bot Number (999) Selected. Try again", response, "Response should indicate an incorrect bot number");
-    // }
-
-    // @Test
-    // void testLimitReached() {
-    //     Assertions.assertTrue(ChatBot.limitReached(), "The limit should be correctly checked");
-    // }
+    
 }

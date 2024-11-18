@@ -32,30 +32,34 @@ public class App {
         while(studentFolders.hasNext()){
             runTests(studentFolders.next());
         }
-        // Path filePath = Paths.get("demo\\javafiles");
-        // URL fileUrl = filePath.toUri().toURL();
-        // ChatBotTest cbt = new ChatBotTest(fileUrl);
-        // TestResults t = new TestResults();
-        // cbt.attach(t);
+        Path filePath = Paths.get("demo\\javafiles");
+        URL fileUrl = filePath.toUri().toURL();
+        ChatBotTest cbt = new ChatBotTest(fileUrl);
+        TestResults t = new TestResults();
+        cbt.attach(t);
         
-        // cbt.testGetTotalNumMessagesRemaining();
-        // cbt.testGenerateResponse();
-        // cbt.testGetTotalNumResponsesGenerated();
-        // cbt.testPrompt();
-        // cbt.testToString();
-        // ChatBotPlatformTest cbpt = new ChatBotPlatformTest(fileUrl);
-        // ChatBotSimulationTest cbst = new ChatBotSimulationTest(fileUrl);
-        // cbpt.attach(t);
-        // cbst.attach(t);
-        // cbpt.testGetChatBotList();
-        // cbpt.testBotsField();
-        // cbpt.testAddChatBot();
-        // cbpt.testInteractWithBot();
-        // // System.out.println(cbst.setUpOutput());
-        // cbst.testHelloWorld();
-        // cbst.testChatBotList();
-        // cbst.testChatBotInteractions();  
-        // System.out.println(t);
+        cbt.testGetTotalNumMessagesRemaining();
+        cbt.testGenerateResponse();
+        cbt.testGetTotalNumResponsesGenerated();
+        cbt.testPrompt();
+        cbt.testToString();
+        ChatBotPlatformTest cbpt = new ChatBotPlatformTest(fileUrl);
+        ChatBotSimulationTest cbst = new ChatBotSimulationTest(fileUrl);
+        cbpt.attach(t);
+        cbst.attach(t);
+        cbpt.testGetChatBotList();
+        cbpt.testBotsField();
+        cbpt.testAddChatBot();
+        cbpt.testInteractWithBot();
+        // System.out.println(cbst.setUpOutput());
+        cbst.testHelloWorld();
+        cbst.testChatBotList();
+        cbst.testChatBotInteractions();  
+        TestResults[] ts = new TestResults[]{
+            t
+        };
+        TestResultsPDFGenerator.generatePDF(ts, "C:\\Users\\craft\\Documents\\TestResults.pdf");
+        System.out.println(t);
     }
 
     public static void runTests(String folder){

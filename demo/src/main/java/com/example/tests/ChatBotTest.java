@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import org.junit.jupiter.api.Test;
 
 import com.example.TestRunner;
+import com.example.validoutput.ValidResponse;
 
 public class ChatBotTest extends TestRunner {
     private URLClassLoader urlClassLoader;
@@ -375,7 +376,8 @@ public class ChatBotTest extends TestRunner {
                     String output = (String)method.invoke(obj);
                     // System.out.println(output);
                     // System.out.println(testResponse("(Message# 2)            R        esponse from ChatGPT-3.5   >>generatedTextHere"));
-                    Assertions.assertTrue(testResponse(output));
+                    setStrategy(new ValidResponse());
+                    Assertions.assertTrue(validOutputStrategy.isValidOutput(output));
                     // System.out.println("1");
                 }
             );
@@ -404,7 +406,8 @@ public class ChatBotTest extends TestRunner {
                     String output = (String)method.invoke(obj, "1");
                     // System.out.println(output);
                     // System.out.println(testResponse("(Message# 2)            R        esponse from ChatGPT-3.5   >>generatedTextHere"));
-                    Assertions.assertTrue(testResponse(output));
+                    setStrategy(new ValidResponse());
+                    Assertions.assertTrue(validOutputStrategy.isValidOutput(output));
                     // System.out.println("1");
                     
                 },
