@@ -1,7 +1,7 @@
 # COMP-3607-PROJECT
 
 # Student Information:                
-Darrion Nobbie
+Darrion Nobbee
 Caleb Ramdath
 Jahiem Ceaser
 Michael Benacia
